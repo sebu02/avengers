@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
+import ShutdownOverlay from "./ShutdownOverlay";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,6 +11,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [isShuttingDown, setIsShuttingDown] = useState(false);
 
     useEffect(() => {
         const checkMobile = () => {
@@ -37,6 +39,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {/* Global Background Effect */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
+                <ShutdownOverlay isTriggered={isShuttingDown} onComplete={() => setIsShuttingDown(false)} />
+
                 {/* Mobile Header */}
                 <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-card/80 backdrop-blur-lg border-b border-border z-[60] flex items-center justify-between px-6">
                     <div className="flex items-center gap-3">
@@ -62,7 +66,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         sidebarOpen ? "w-64" : "w-20"
                     )}
                 >
-                    <Sidebar isOpen={sidebarOpen} toggle={() => setSidebarOpen(!sidebarOpen)} />
+                    <Sidebar
+                        isOpen={sidebarOpen}
+                        toggle={() => setSidebarOpen(!sidebarOpen)}
+                        onShutdown={() => setIsShuttingDown(true)}
+                    />
                 </div>
 
                 {/* Mobile Sidebar Overlay */}
@@ -91,7 +99,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                         <X size={20} />
                                     </button>
                                 </div>
-                                <Sidebar isOpen={true} toggle={() => setMobileMenuOpen(false)} isMobile />
+                                <Sidebar
+                                    isOpen={true}
+                                    toggle={() => setMobileMenuOpen(false)}
+                                    isMobile
+                                    onShutdown={() => {
+                                        setMobileMenuOpen(false);
+                                        setIsShuttingDown(true);
+                                    }}
+                                />
                             </motion.div>
                         </>
                     )}
@@ -101,12 +117,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     "flex-1 overflow-y-auto relative z-10 transition-all duration-300",
                     isMobile ? "pt-16" : "pt-0"
                 )}>
-                    <div className={clsx(
-                        "transition-all duration-300",
-                        isMobile ? "p-4" : "p-8"
-                    )}>
+                    <motion.div
+                        animate={isShuttingDown ? { opacity: 0, scale: 0.95, filter: "blur(10px)" } : { opacity: 1, scale: 1, filter: "blur(0px)" }}
+                        transition={{ duration: 1 }}
+                        className={clsx(
+                            "transition-all duration-300",
+                            isMobile ? "p-4" : "p-8"
+                        )}
+                    >
                         {children}
-                    </div>
+                    </motion.div>
                 </main>
             </div>
         </ThemeProvider>

@@ -1,16 +1,27 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Plus, Trash2, Edit2, CheckCircle, Circle, RefreshCcw, X, Save } from "lucide-react";
+import {
+    Plus, Trash2, Edit2, CheckCircle, RefreshCcw, X, Save,
+    Target, Zap, Shield, User, BarChart3, Clock, ChevronRight,
+    Search, Filter, MessageSquare, AlertTriangle
+} from "lucide-react";
 import { format } from "date-fns";
 import clsx from "clsx";
 import { Task } from "@/types";
 import { getTasks, createTask, updateTask, deleteTask as apiDeleteTask } from "@/services/api";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function TasksPage() {
+const HEROES = [
+    { name: "IRON MAN", color: "text-red-500", progress: 65, missions: 12, power: "Arc Reactor", loc: "Stark Tower" },
+    { name: "BLACK WIDOW", color: "text-slate-400", progress: 92, missions: 45, power: "Espionage", loc: "Classified" },
+    { name: "CAPTAIN AMERICA", color: "text-blue-500", progress: 88, missions: 30, power: "Super Soldier", loc: "Brooklyn" },
+];
+
+export default function MissionsPage() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedMission, setSelectedMission] = useState<Task | null>(null);
     const [editingTask, setEditingTask] = useState<Task | null>(null);
 
     // Form State
@@ -47,217 +58,404 @@ export default function TasksPage() {
             setStatus("TODO");
         }
         setIsModalOpen(true);
-    };
+    }
 
     const closeModal = () => {
         setIsModalOpen(false);
         setEditingTask(null);
-    };
+    }
 
     const handleSave = async () => {
         if (!title.trim()) return;
-
         try {
             if (editingTask) {
-                const updated = await updateTask(editingTask.id, {
-                    title,
-                    priority,
-                    status
-                });
-                setTasks(tasks.map((t) => (t.id === editingTask.id ? updated : t)));
+                const updated = await updateTask(editingTask.id, { title, priority, status });
+                setTasks(tasks.map(t => t.id === editingTask.id ? updated : t));
             } else {
-                const newTask = await createTask({
-                    title,
-                    status,
-                    priority,
-                });
+                const newTask = await createTask({ title, status, priority });
                 setTasks([...tasks, newTask]);
             }
             closeModal();
         } catch (error) {
             console.error("Failed to save task", error);
         }
-    };
+    }
 
     const toggleStatus = async (task: Task) => {
         const newStatus = task.status === "DONE" ? "TODO" : "DONE";
         try {
             const updated = await updateTask(task.id, { status: newStatus });
-            setTasks(tasks.map((t) => (t.id === task.id ? updated : t)));
+            setTasks(tasks.map(t => t.id === task.id ? updated : t));
         } catch (error) {
-            console.error("Failed to update task status", error);
+            console.error("Failed to update status", error);
+        }
+    }
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
         }
     };
 
-    const handleDeleteTask = async (id: number) => {
-        if (!confirm("Confirm directive cancellation?")) return;
-        try {
-            await apiDeleteTask(id);
-            setTasks(tasks.filter((t) => t.id !== id));
-        } catch (error) {
-            console.error("Failed to delete task", error);
-        }
+    const itemVariants = {
+        hidden: { opacity: 0, x: -20 },
+        visible: { opacity: 1, x: 0 }
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8 relative">
-            <header className="flex items-center justify-between border-b border-primary/20 pb-6">
-                <div>
-                    <h1 className="text-3xl font-black uppercase tracking-widest text-foreground mb-2 flex items-center gap-3">
-                        <span className="w-3 h-8 bg-primary block" />
-                        Active Missions
-                    </h1>
-                    <p className="text-muted-foreground font-mono text-sm uppercase tracking-wider pl-6">Execute directives with extreme prejudice.</p>
-                </div>
-                <button
-                    onClick={() => openModal()}
-                    className="bg-primary/90 hover:bg-primary text-primary-foreground px-6 py-3 rounded-none flex items-center gap-2 transition-all hover:tracking-widest shadow-[0_0_15px_rgba(14,165,233,0.3)] border border-white/10 uppercase font-bold text-xs tracking-wider"
-                >
-                    <Plus className="w-4 h-4" />
-                    New Order
-                </button>
-            </header>
+        <div className="max-w-7xl mx-auto space-y-10 pb-32 px-4">
 
-            {loading ? (
-                <div className="text-center py-12 text-muted-foreground flex items-center justify-center gap-2 font-mono uppercase tracking-widest">
-                    <RefreshCcw className="w-5 h-5 animate-spin" /> Retrieving Directives...
+            {/* HERO PERFORMANCE TRACKER */}
+            <section className="bg-slate-900/60 border border-cyan-500/20 rounded-[32px] p-8 backdrop-blur-xl shadow-[0_0_50px_rgba(6,182,212,0.1)] relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-1000">
+                    <BarChart3 size={150} />
                 </div>
-            ) : (
-                <div className="space-y-4">
-                    {tasks.map((task) => (
+                <div className="flex items-center gap-3 mb-10">
+                    <div className="p-2 bg-cyan-500/10 rounded-lg">
+                        <BarChart3 className="text-cyan-500" size={24} />
+                    </div>
+                    <h2 className="text-sm font-black tracking-[0.4em] text-white uppercase italic">Avenger Performance Metrics</h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    {HEROES.map((hero, i) => (
                         <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            key={task.id}
-                            className={clsx(
-                                "group flex items-center gap-4 p-4 rounded-none border-l-4 transition-all bg-card/40 backdrop-blur-sm hover:bg-card/60",
-                                task.status === "DONE"
-                                    ? "border-green-500/50 opacity-60"
-                                    : "border-primary shadow-[0_0_10px_rgba(14,165,233,0.1)]"
-                            )}
+                            key={hero.name}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.2 }}
+                            className="space-y-4 p-4 rounded-2xl hover:bg-white/5 transition-all cursor-pointer group/hero"
                         >
-                            <button
-                                onClick={() => toggleStatus(task)}
-                                className={clsx(
-                                    "w-6 h-6 rounded-sm flex items-center justify-center transition-colors border",
-                                    task.status === "DONE"
-                                        ? "bg-green-500/20 border-green-500 text-green-500"
-                                        : "bg-transparent border-primary/50 text-transparent hover:border-primary hover:text-primary/50"
-                                )}
-                            >
-                                <CheckCircle className="w-4 h-4" />
-                            </button>
-
-                            <div className="flex-1">
-                                <h3 className={clsx("font-bold uppercase tracking-wide transition-all", task.status === "DONE" ? "line-through text-muted-foreground" : "text-foreground")}>
-                                    {task.title}
-                                </h3>
-                                <p className="text-xs text-muted-foreground mt-1 font-mono uppercase tracking-wider flex gap-4">
-                                    <span>Priority: <span className="text-primary">{task.priority}</span></span>
-                                    <span>Issued: {format(new Date(task.created_at || new Date()), "HH:mm | dd MMM yyyy")}</span>
-                                </p>
+                            <div className="flex justify-between items-end">
+                                <div>
+                                    <h3 className={`text-xs font-black ${hero.color} tracking-widest uppercase mb-1`}>{hero.name}</h3>
+                                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">{hero.missions} Deployments • {hero.loc}</p>
+                                </div>
+                                <span className="text-sm font-black font-mono text-white italic">{hero.progress}%</span>
                             </div>
-
-                            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button
-                                    onClick={() => openModal(task)}
-                                    className="p-2 text-muted-foreground hover:text-primary transition-colors border border-transparent hover:border-primary/30"
-                                >
-                                    <Edit2 className="w-4 h-4" />
-                                </button>
-                                <button
-                                    onClick={() => handleDeleteTask(task.id)}
-                                    className="p-2 text-muted-foreground hover:text-destructive transition-colors border border-transparent hover:border-destructive/30"
-                                >
-                                    <Trash2 className="w-4 h-4" />
-                                </button>
+                            <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden shadow-inner">
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${hero.progress}%` }}
+                                    className={clsx("h-full rounded-full shadow-[0_0_15px_rgba(6,182,212,0.3)]", hero.color.replace('text-', 'bg-'))}
+                                />
+                            </div>
+                            <div className="flex justify-between items-center opacity-0 group-hover/hero:opacity-100 transition-opacity">
+                                <span className="text-[8px] font-black text-slate-500 uppercase">Core: {hero.power}</span>
+                                <div className="flex gap-1">
+                                    <div className="w-1 h-1 rounded-full bg-cyan-500 animate-pulse" />
+                                    <div className="w-1 h-1 rounded-full bg-cyan-500 animate-pulse delay-75" />
+                                    <div className="w-1 h-1 rounded-full bg-cyan-500 animate-pulse delay-150" />
+                                </div>
                             </div>
                         </motion.div>
                     ))}
-
-                    {tasks.length === 0 && (
-                        <div className="text-center py-12 text-muted-foreground font-mono uppercase tracking-widest border border-dashed border-primary/20 p-8">
-                            No active directives found. Standby for orders.
-                        </div>
-                    )}
                 </div>
+            </section>
+
+            {/* MISSION LIST HEADER */}
+            <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 pt-4">
+                <div className="relative">
+                    <h1 className="text-5xl font-black text-white tracking-tighter flex items-center gap-4 mb-3 uppercase italic">
+                        <Target className="text-cyan-500 animate-pulse" size={44} />
+                        Active <span className="text-cyan-500 not-italic">Missions</span>
+                    </h1>
+                    <div className="flex items-center gap-4 pl-1">
+                        <div className="h-0.5 w-12 bg-cyan-500/50" />
+                        <p className="text-[10px] text-slate-400 font-mono tracking-[0.3em] uppercase">
+                            Strategic directives for earth's mightiest heroes
+                        </p>
+                    </div>
+                </div>
+
+                <div className="flex gap-4">
+                    <div className="relative hidden md:block group">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-500 transition-colors" size={16} />
+                        <input
+                            placeholder="SEARCH ENCRYPTED LOGS..."
+                            className="bg-slate-900/50 border border-white/10 rounded-xl pl-12 pr-6 py-4 text-[10px] font-black tracking-widest text-white focus:border-cyan-500/50 outline-none w-64 transition-all"
+                        />
+                    </div>
+                    <button
+                        onClick={() => openModal()}
+                        className="px-10 py-4 bg-cyan-600 text-white font-black text-xs tracking-[0.3em] uppercase rounded-none hover:bg-cyan-500 transition-all hover:scale-[1.02] active:scale-95 shadow-[0_0_30px_rgba(6,182,212,0.3)] flex items-center gap-3 relative overflow-hidden group"
+                    >
+                        <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
+                        <Plus size={18} /> Issue Directive
+                    </button>
+                </div>
+            </header>
+
+            {/* MISSIONS GRID */}
+            {loading ? (
+                <div className="text-center py-40 bg-slate-900/20 rounded-3xl border border-white/5 border-dashed">
+                    <RefreshCcw className="w-12 h-12 text-cyan-500/40 animate-spin mx-auto pb-4" />
+                    <span className="text-xs font-black tracking-[0.5em] text-slate-500 uppercase">Synchronizing with JARVIS Network...</span>
+                </div>
+            ) : (
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="grid grid-cols-1 gap-6"
+                >
+                    {tasks.map((task, i) => (
+                        <motion.div
+                            key={task.id}
+                            variants={itemVariants}
+                            onClick={() => setSelectedMission(task)}
+                            className={clsx(
+                                "group relative flex flex-col md:flex-row md:items-center gap-8 p-8 bg-slate-900/40 border border-white/5 hover:border-cyan-500/40 transition-all cursor-pointer rounded-2xl overflow-hidden backdrop-blur-sm",
+                                task.status === 'DONE' && "opacity-50 hover:opacity-80"
+                            )}
+                        >
+                            {/* Animated Background Pulse */}
+                            <div className="absolute inset-0 bg-cyan-500/0 group-hover:bg-cyan-500/5 transition-colors duration-500" />
+
+                            {/* Status Stripe */}
+                            <div className={clsx(
+                                "absolute top-0 left-0 w-1.5 h-full transition-all duration-300 group-hover:w-2",
+                                task.priority >= 3 ? "bg-red-500 shadow-[0_0_15px_red]" : "bg-cyan-500 shadow-[0_0_15px_cyan]"
+                            )} />
+
+                            {/* Avenger Deployment Animation */}
+                            <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0 duration-500">
+                                <span className="text-[8px] font-black text-cyan-500 bg-cyan-500/10 px-2 py-1 rounded border border-cyan-500/20 italic tracking-widest">AVENGER DEPLOYED</span>
+                            </div>
+
+                            <div className="flex-1 flex items-start gap-6 relative z-10">
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleStatus(task);
+                                    }}
+                                    className={clsx(
+                                        "w-14 h-14 shrink-0 border-2 rounded-xl flex items-center justify-center transition-all duration-500 transform group-hover:rotate-12",
+                                        task.status === 'DONE' ? "bg-cyan-500 border-cyan-500 text-black scale-110 shadow-[0_0_20px_cyan]" : "border-white/10 text-transparent hover:border-cyan-500/50 hover:bg-cyan-500/5"
+                                    )}
+                                >
+                                    <CheckCircle size={24} className={task.status === 'DONE' ? 'opacity-100' : 'opacity-0'} />
+                                </button>
+
+                                <div className="space-y-3">
+                                    <h3 className="text-xl font-black text-white uppercase tracking-wider group-hover:text-cyan-400 transition-colors italic">{task.title}</h3>
+                                    <div className="flex flex-wrap items-center gap-6">
+                                        <div className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase group-hover:text-slate-300 transition-colors">
+                                            <Clock size={12} className="text-cyan-500" />
+                                            {format(new Date(task.created_at || Date.now()), "HH:mm • dd MMM")}
+                                        </div>
+                                        <div className={clsx(
+                                            "flex items-center gap-2 text-[10px] font-black uppercase px-3 py-1 rounded-full",
+                                            task.priority >= 3 ? "text-red-500 bg-red-500/10 border border-red-500/20" : "text-cyan-500 bg-cyan-500/10 border border-cyan-500/20"
+                                        )}>
+                                            <Zap size={10} className="fill-current" />
+                                            Priority Level {task.priority}
+                                        </div>
+                                        <div className="flex items-center gap-2 text-[10px] font-black text-amber-500 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+                                            <AlertTriangle size={10} />
+                                            STABILIZATION: ACTIVE
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* ASSIGNED HERO */}
+                            <div className="flex items-center gap-4 md:border-l-2 border-white/5 md:pl-10 relative z-10">
+                                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-500 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(6,182,212,0.1)]">
+                                    <User size={20} />
+                                </div>
+                                <div>
+                                    <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em] mb-0.5">Assigned Agent</p>
+                                    <p className="text-xs font-black text-cyan-400 uppercase tracking-widest">{HEROES[i % HEROES.length].name}</p>
+                                </div>
+                                <ChevronRight className="text-white/10 group-hover:text-cyan-500 transition-colors ml-4 md:opacity-0 group-hover:opacity-100" />
+                            </div>
+
+                            {/* HIDDEN TECH OVERLAY */}
+                            <div className="absolute bottom-0 right-0 p-2 opacity-0 group-hover:opacity-10 transition-opacity">
+                                <Shield size={100} />
+                            </div>
+                        </motion.div>
+                    ))}
+                </motion.div>
             )}
 
-            {/* Edit/Create Modal */}
+            {/* MISSION DETAIL DIALOG */}
             <AnimatePresence>
-                {isModalOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                {selectedMission && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-                            onClick={closeModal}
+                            className="absolute inset-0 bg-black/95 backdrop-blur-2xl"
+                            onClick={() => setSelectedMission(null)}
                         />
                         <motion.div
-                            initial={{ scale: 0.95, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.95, opacity: 0 }}
-                            className="relative z-60 bg-slate-900 border border-primary/30 w-full max-w-lg shadow-[0_0_50px_rgba(14,165,233,0.15)]"
+                            initial={{ scale: 0.95, opacity: 0, y: 30 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.95, opacity: 0, y: 30 }}
+                            className="relative w-full max-w-3xl bg-slate-950 border-2 border-cyan-500/30 rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.2)]"
                         >
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-transparent" />
+                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
 
-                            <div className="p-6 border-b border-white/5 flex justify-between items-center">
-                                <h2 className="text-xl font-black uppercase tracking-widest flex items-center gap-2">
-                                    <span className="w-2 h-6 bg-primary block" />
-                                    {editingTask ? "Update Directive" : "New Order"}
-                                </h2>
-                                <button onClick={closeModal} className="text-muted-foreground hover:text-primary transition-colors">
-                                    <X className="w-6 h-6" />
-                                </button>
+                            <div className="p-12 space-y-10">
+                                <div className="flex justify-between items-start">
+                                    <div className="space-y-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-2 h-6 bg-cyan-500 shadow-[0_0_10px_cyan]" />
+                                            <span className="text-[10px] font-black text-cyan-500 uppercase tracking-[0.5em]">MISSION DEBRIEF: {selectedMission.id}</span>
+                                        </div>
+                                        <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter max-w-md">{selectedMission.title}</h2>
+                                    </div>
+                                    <div className="flex gap-3">
+                                        <button
+                                            onClick={() => {
+                                                openModal(selectedMission);
+                                                setSelectedMission(null);
+                                            }}
+                                            className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:border-cyan-500 hover:text-cyan-500 transition-all hover:scale-105"
+                                        >
+                                            <Edit2 size={24} />
+                                        </button>
+                                        <button
+                                            onClick={() => setSelectedMission(null)}
+                                            className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-red-500/10 hover:border-red-500 hover:text-red-500 transition-all hover:scale-105"
+                                        >
+                                            <X size={24} />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                                    <div className="space-y-8">
+                                        <div className="p-8 bg-white/5 border border-white/10 rounded-3xl relative group overflow-hidden">
+                                            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
+                                                <Target size={60} />
+                                            </div>
+                                            <h4 className="text-[9px] font-black text-cyan-500 uppercase tracking-[0.3em] mb-4">Tactical Intelligence</h4>
+                                            <p className="text-slate-300 font-medium text-sm leading-relaxed italic">
+                                                "Current satellite scans indicate fluctuating energy readings in this sector. Assigned operatives are advised to proceed with extreme caution. Standard engagement protocols apply."
+                                            </p>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-6">
+                                            <div className="p-5 bg-black/40 border border-white/10 rounded-2xl">
+                                                <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Alert Level</span>
+                                                <span className={clsx("text-lg font-black uppercase italic", selectedMission.priority >= 3 ? "text-red-500" : "text-cyan-500")}>
+                                                    {selectedMission.priority >= 3 ? "CRITICAL" : "STANDARD"}
+                                                </span>
+                                            </div>
+                                            <div className="p-5 bg-black/40 border border-white/10 rounded-2xl">
+                                                <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Status</span>
+                                                <span className="text-lg font-black text-white uppercase italic">{selectedMission.status}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-8">
+                                        <div className="aspect-square bg-slate-900/60 rounded-3xl border border-white/10 overflow-hidden relative group">
+                                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)] z-10" />
+                                            <img src={`https://api.dicebear.com/7.x/shapes/svg?seed=${selectedMission.id}`} className="w-full h-full object-cover opacity-20 grayscale" alt="Tactical Map" />
+                                            <div className="absolute inset-0 flex items-center justify-center z-20">
+                                                <div className="text-center group-hover:scale-105 transition-transform">
+                                                    <Search className="text-cyan-500 mx-auto mb-3 animate-pulse" size={40} />
+                                                    <span className="text-[10px] font-black text-cyan-500 uppercase tracking-widest">ACCESS TACTICAL MAP</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex gap-4">
+                                            <button className="flex-1 py-4 bg-white/5 border border-white/10 text-[10px] font-black text-white hover:bg-white/10 transition-all rounded-2xl uppercase tracking-[0.2em] flex items-center justify-center gap-2">
+                                                <MessageSquare size={14} /> Team Comm
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    apiDeleteTask(selectedMission.id).then(() => {
+                                                        fetchTasks();
+                                                        setSelectedMission(null);
+                                                    });
+                                                }}
+                                                className="px-6 py-4 border-2 border-red-500/20 text-red-500 hover:bg-red-500/10 transition-all rounded-2xl"
+                                            >
+                                                <Trash2 size={20} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="p-6 space-y-6">
-                                <div className="space-y-2">
-                                    <label className="text-xs font-mono uppercase text-muted-foreground tracking-widest">Directive Title</label>
+                            <div className="bg-cyan-950/20 p-6 border-t border-cyan-500/10 flex justify-between items-center">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                                        <span className="text-[9px] font-black text-cyan-500 uppercase tracking-widest italic">Uplink Secured</span>
+                                    </div>
+                                    <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">{format(new Date(), "yyyy-MM-dd HH:mm:ss")}</span>
+                                </div>
+                                <span className="text-[9px] font-bold text-slate-600 uppercase tracking-widest">End of Directive</span>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
+            {/* EDIT/CREATE MODAL */}
+            <AnimatePresence>
+                {isModalOpen && (
+                    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/95 backdrop-blur-md" onClick={closeModal} />
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 30 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 30 }}
+                            className="relative w-full max-w-xl bg-slate-900 border-2 border-cyan-500/30 p-12 space-y-10 rounded-3xl shadow-[0_0_80px_rgba(6,182,212,0.3)]"
+                        >
+                            <div className="space-y-2">
+                                <h2 className="text-3xl font-black text-white tracking-widest uppercase italic">Tactical Briefing</h2>
+                                <p className="text-[10px] text-cyan-500 font-bold uppercase tracking-[0.3em]">Authorized Command Only</p>
+                            </div>
+
+                            <div className="space-y-8">
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Directive Title</label>
                                     <input
-                                        type="text"
                                         value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        className="w-full bg-slate-950 border border-primary/20 p-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-mono"
-                                        placeholder="ENTER MISSION OBJECTIVE"
+                                        onChange={e => setTitle(e.target.value)}
+                                        className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-sm focus:border-cyan-500 outline-none transition-all rounded-xl placeholder:text-white/10"
+                                        placeholder="ENCRYPTED TITLE REQUIRED..."
                                     />
                                 </div>
-
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-mono uppercase text-muted-foreground tracking-widest">Priority Level</label>
-                                        <select
-                                            value={priority}
-                                            onChange={(e) => setPriority(Number(e.target.value))}
-                                            className="w-full bg-slate-950 border border-primary/20 p-3 text-sm focus:border-primary focus:outline-none font-mono"
-                                        >
-                                            <option value={1}>LEVEL 1 (ROUTINE)</option>
-                                            <option value={2}>LEVEL 2 (URGENT)</option>
-                                            <option value={3}>LEVEL 3 (CRITICAL)</option>
+                                <div className="grid grid-cols-2 gap-8">
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Threat Assessment</label>
+                                        <select value={priority} onChange={e => setPriority(Number(e.target.value))} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-cyan-500 outline-none rounded-xl appearance-none cursor-pointer">
+                                            <option value={1}>LEVEL 1: ROUTINE</option>
+                                            <option value={2}>LEVEL 2: URGENT</option>
+                                            <option value={3}>LEVEL 3: CRITICAL</option>
                                         </select>
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-mono uppercase text-muted-foreground tracking-widest">Status</label>
-                                        <select
-                                            value={status}
-                                            onChange={(e) => setStatus(e.target.value as "TODO" | "IN_PROGRESS" | "DONE")}
-                                            className="w-full bg-slate-950 border border-primary/20 p-3 text-sm focus:border-primary focus:outline-none font-mono"
-                                        >
-                                            <option value="TODO">PENDING</option>
-                                            <option value="IN_PROGRESS">ACTIVE</option>
-                                            <option value="DONE">COMPLETED</option>
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Deployment Phase</label>
+                                        <select value={status} onChange={e => setStatus(e.target.value as any)} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-cyan-500 outline-none rounded-xl appearance-none cursor-pointer">
+                                            <option value="TODO">WAITING</option>
+                                            <option value="IN_PROGRESS">DEPLOYED</option>
+                                            <option value="DONE">SUCCESS</option>
                                         </select>
                                     </div>
                                 </div>
-
-                                <button
-                                    onClick={handleSave}
-                                    className="w-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/50 py-4 uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 group"
-                                >
-                                    <Save className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                    Confirm Directive
-                                </button>
+                                <div className="pt-4">
+                                    <button
+                                        onClick={handleSave}
+                                        className="w-full py-5 bg-cyan-600 text-white font-black text-xs tracking-[0.4em] uppercase hover:bg-cyan-500 transition-all flex items-center justify-center gap-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.2)] active:scale-95 group"
+                                    >
+                                        <Save size={18} className="group-hover:rotate-12 transition-transform" />
+                                        {editingTask ? "Update Briefing" : "Issue Mission"}
+                                    </button>
+                                </div>
                             </div>
                         </motion.div>
                     </div>

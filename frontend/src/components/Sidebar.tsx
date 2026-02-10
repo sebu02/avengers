@@ -3,15 +3,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
     LayoutDashboard, CheckSquare, Bug, Settings, LogOut, Users, Plane,
-    ChevronLeft, ChevronRight, Radio, Lock, Target, Cpu, GitBranch
+    ChevronLeft, ChevronRight, Radio, Lock, Target, Cpu, GitBranch, ShieldAlert,
+    Shield
 } from "lucide-react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 
 const navItems = [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/tasks", label: "Tasks", icon: CheckSquare },
-    { href: "/bugs", label: "Bugs", icon: Bug },
+    { href: "/", label: "Avengers Command", icon: LayoutDashboard },
+    { href: "/tasks", label: "Missions", icon: Target },
+    { href: "/bugs", label: "Damage Reports", icon: ShieldAlert },
     { href: "/team", label: "Team Status", icon: Users },
     { href: "/helicarrier", label: "Helicarrier Ops", icon: Plane },
     { href: "/communications", label: "Communications", icon: Radio },
@@ -26,9 +27,10 @@ interface SidebarProps {
     isOpen: boolean;
     toggle: () => void;
     isMobile?: boolean;
+    onShutdown?: () => void;
 }
 
-export default function Sidebar({ isOpen, toggle, isMobile = false }: SidebarProps) {
+export default function Sidebar({ isOpen, toggle, isMobile = false, onShutdown }: SidebarProps) {
     const pathname = usePathname();
 
     return (
@@ -40,7 +42,7 @@ export default function Sidebar({ isOpen, toggle, isMobile = false }: SidebarPro
         >
             <div className="flex items-center gap-3 mb-10 relative">
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shadow-[0_0_15px_rgba(14,165,233,0.5)] border border-primary/50 shrink-0">
-                    <Bug className="text-primary w-6 h-6 animate-pulse" />
+                    <Shield className="text-primary w-6 h-6 animate-pulse" />
                 </div>
 
                 <div className={clsx("overflow-hidden transition-all duration-300", isOpen ? "opacity-100 w-auto" : "opacity-0 w-0")}>
@@ -105,11 +107,31 @@ export default function Sidebar({ isOpen, toggle, isMobile = false }: SidebarPro
                 })}
             </nav>
 
-            <div className={clsx("pt-6 border-t border-border mt-auto", !isOpen && "flex justify-center")}>
-                <button className={clsx("flex items-center gap-3 text-muted-foreground hover:text-destructive transition-colors rounded-lg hover:bg-destructive/10 p-2", isOpen ? "w-full px-4" : "justify-center")}>
-                    <LogOut className="w-5 h-5" />
-                    {isOpen && <span className="text-xs font-bold uppercase tracking-wider">Logout</span>}
+            <div className={clsx("pt-6 border-t border-white/5 mt-auto bg-gradient-to-t from-primary/5 to-transparent", !isOpen && "flex justify-center")}>
+                <button
+                    onClick={() => {
+                        if (onShutdown) onShutdown();
+                    }}
+                    className={clsx(
+                        "flex items-center gap-3 text-muted-foreground hover:text-red-500 transition-all rounded-xl hover:bg-red-500/10 p-3 group relative overflow-hidden",
+                        isOpen ? "w-full" : "justify-center"
+                    )}
+                >
+                    <div className="absolute inset-0 bg-red-500/0 group-hover:bg-red-500/5 transition-colors" />
+                    <LogOut className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                    {isOpen && (
+                        <div className="flex flex-col items-start">
+                            <span className="text-[10px] font-black uppercase tracking-widest">System Shutdown</span>
+                            <span className="text-[8px] font-mono text-slate-500 uppercase">Clear Local Cache</span>
+                        </div>
+                    )}
                 </button>
+                {isOpen && (
+                    <div className="mt-4 flex items-center gap-2 px-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_green]" />
+                        <span className="text-[8px] font-black text-slate-500 uppercase tracking-tighter">Uplink: Secure • Level 7 Clearance</span>
+                    </div>
+                )}
             </div>
         </aside>
     );
