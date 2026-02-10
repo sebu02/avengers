@@ -681,26 +681,35 @@ export default function HelicarrierPage() {
             {/* Avenger Deployment Dialog */}
             <AnimatePresence>
                 {deployingHero && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-                        <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.8, opacity: 0 }}
-                            className="bg-black border border-cyan-500 w-full max-w-md h-[400px] rounded-lg relative overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.5)]"
-                        >
-                            <button
+                    <div className="fixed inset-0 z-[100] overflow-y-auto custom-scrollbar">
+                        <div className="min-h-full flex items-center justify-center p-4">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/80 backdrop-blur-sm"
                                 onClick={() => setDeployingHero(null)}
-                                className="absolute top-2 right-2 z-50 text-cyan-500 hover:text-white bg-black/50 rounded-full p-1"
+                            />
+                            <motion.div
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.8, opacity: 0 }}
+                                className="relative z-10 bg-black border border-cyan-500 w-full max-w-md h-[400px] rounded-lg relative overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.5)]"
                             >
-                                <X size={20} />
-                            </button>
-                            <div className="w-full h-full">
-                                <DeploymentAnimation
-                                    heroId={deployingHero}
-                                    onComplete={() => console.log('Deployment cycle complete for', deployingHero)}
-                                />
-                            </div>
-                        </motion.div>
+                                <button
+                                    onClick={() => setDeployingHero(null)}
+                                    className="absolute top-2 right-2 z-50 text-cyan-500 hover:text-white bg-black/50 rounded-full p-1"
+                                >
+                                    <X size={20} />
+                                </button>
+                                <div className="w-full h-full">
+                                    <DeploymentAnimation
+                                        heroId={deployingHero}
+                                        onComplete={() => console.log('Deployment cycle complete for', deployingHero)}
+                                    />
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
                 )}
             </AnimatePresence>
@@ -708,94 +717,96 @@ export default function HelicarrierPage() {
             {/* CIA Access Modal */}
             <AnimatePresence>
                 {ciaAccess && (
-                    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-                        <motion.div
-                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-black/90 backdrop-blur-md"
-                            onClick={() => setCiaAccess(false)}
-                        />
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            className="relative z-10 w-full max-w-2xl bg-[#0a0a0a] border border-cyan-500 rounded-lg overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.3),inset_0_0_20px_rgba(0,0,0,1)] font-mono flex flex-col max-h-[80vh]"
-                        >
-                            <div className="bg-cyan-950/30 p-4 border-b border-cyan-500/30 flex justify-between items-center shrink-0">
-                                <div className="flex items-center gap-2 text-cyan-400 text-sm tracking-[0.2em] uppercase font-bold">
-                                    <Lock className="w-4 h-4" /> CIA Restricted Mainframe
+                    <div className="fixed inset-0 z-[110] overflow-y-auto custom-scrollbar">
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/90 backdrop-blur-md"
+                                onClick={() => setCiaAccess(false)}
+                            />
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                                animate={{ scale: 1, opacity: 1, y: 0 }}
+                                exit={{ scale: 0.9, opacity: 0 }}
+                                className="relative z-10 w-full max-w-2xl bg-[#0a0a0a] border border-cyan-500 rounded-lg overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.3),inset_0_0_20px_rgba(0,0,0,1)] font-mono flex flex-col max-h-[90vh]"
+                            >
+                                <div className="bg-cyan-950/30 p-4 border-b border-cyan-500/30 flex justify-between items-center shrink-0">
+                                    <div className="flex items-center gap-2 text-cyan-400 text-sm tracking-[0.2em] uppercase font-bold">
+                                        <Lock className="w-4 h-4" /> CIA Restricted Mainframe
+                                    </div>
+                                    <button onClick={() => setCiaAccess(false)}><X className="w-5 h-5 text-cyan-600 hover:text-white hover:rotate-90 transition-all" /></button>
                                 </div>
-                                <button onClick={() => setCiaAccess(false)}><X className="w-5 h-5 text-cyan-600 hover:text-white hover:rotate-90 transition-all" /></button>
-                            </div>
 
-                            <div className="p-8 overflow-y-auto min-h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(6,182,212,0.05),transparent)]">
-                                {ciaLoginStatus === 'GRANTED' ? (
-                                    activeFile ? (
-                                        <div className="animate-in fade-in slide-in-from-right-8 duration-300">
-                                            <button onClick={() => setActiveFile(null)} className="text-xs text-cyan-500 hover:text-white mb-6 flex items-center gap-2 px-3 py-1 border border-cyan-500/30 rounded w-fit hover:bg-cyan-500/20 transition-colors">
-                                                <ArrowLeft size={12} /> BACK TO INDEX
-                                            </button>
-                                            <div className="border border-red-900/50 bg-red-950/10 p-8 rounded relative overflow-hidden">
-                                                <div className="absolute top-4 right-4 text-red-500/20 border-2 border-red-500/20 rounded p-2 text-xs -rotate-12 uppercase font-black border-dashed">Top Secret</div>
-                                                <h3 className="text-2xl text-red-500 font-black mb-6 uppercase tracking-wider flex items-center gap-3">
-                                                    <FileText /> SUBJECT: {activeFile}
-                                                </h3>
-                                                <div className="space-y-6 text-gray-300 text-sm font-serif leading-relaxed relative z-10">
-                                                    <p>INTELLIGENCE REPORT #892-A // CLEARANCE LEVEL 8</p>
-                                                    <div className="w-full h-px bg-red-900/30 mb-4" />
-                                                    <p>Analysis confirms the presence of enhanced individuals. Primary objective remains containment.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-500">
-                                            {CIA_FILES.map(file => (
-                                                <div
-                                                    key={file.id}
-                                                    onClick={() => setActiveFile(file.id)}
-                                                    className="bg-black/40 border border-cyan-800 p-4 rounded hover:bg-cyan-900/20 hover:border-cyan-400 cursor-pointer group transition-all hover:scale-[1.02] relative overflow-hidden"
-                                                >
-                                                    <div className="absolute top-0 right-0 p-1 bg-cyan-900/30 rounded-bl text-[8px] text-cyan-500">{file.date}</div>
-                                                    <div className="flex justify-between items-start mb-3">
-                                                        <FileText className="text-cyan-600 group-hover:text-cyan-400 w-8 h-8" />
-                                                        <span className="text-[9px] border border-cyan-900 px-1 py-0.5 rounded text-cyan-700 uppercase">{file.type}</span>
+                                <div className="p-8 overflow-y-auto min-h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(6,182,212,0.05),transparent)]">
+                                    {ciaLoginStatus === 'GRANTED' ? (
+                                        activeFile ? (
+                                            <div className="animate-in fade-in slide-in-from-right-8 duration-300">
+                                                <button onClick={() => setActiveFile(null)} className="text-xs text-cyan-500 hover:text-white mb-6 flex items-center gap-2 px-3 py-1 border border-cyan-500/30 rounded w-fit hover:bg-cyan-500/20 transition-colors">
+                                                    <ArrowLeft size={12} /> BACK TO INDEX
+                                                </button>
+                                                <div className="border border-red-900/50 bg-red-950/10 p-8 rounded relative overflow-hidden">
+                                                    <div className="absolute top-4 right-4 text-red-500/20 border-2 border-red-500/20 rounded p-2 text-xs -rotate-12 uppercase font-black border-dashed">Top Secret</div>
+                                                    <h3 className="text-2xl text-red-500 font-black mb-6 uppercase tracking-wider flex items-center gap-3">
+                                                        <FileText /> SUBJECT: {activeFile}
+                                                    </h3>
+                                                    <div className="space-y-6 text-gray-300 text-sm font-serif leading-relaxed relative z-10">
+                                                        <p>INTELLIGENCE REPORT #892-A // CLEARANCE LEVEL 8</p>
+                                                        <div className="w-full h-px bg-red-900/30 mb-4" />
+                                                        <p>Analysis confirms the presence of enhanced individuals. Primary objective remains containment.</p>
                                                     </div>
-                                                    <div className="font-bold text-cyan-500 group-hover:text-cyan-300 tracking-wider">{file.id}</div>
-                                                    <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                                 </div>
-                                            ))}
-                                        </div>
-                                    )
-                                ) : (
-                                    <form onSubmit={handleCiaLogin} className="space-y-6 max-w-xs mx-auto text-center mt-10">
-                                        <div className="w-24 h-24 mx-auto bg-cyan-900/10 rounded-full flex items-center justify-center mb-8 animate-pulse border border-cyan-500/30 relative">
-                                            <div className="absolute inset-0 rounded-full border border-cyan-500/20 animate-ping" />
-                                            <Fingerprint className="w-12 h-12 text-cyan-600" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <p className="text-cyan-600 text-xs tracking-[0.2em] uppercase font-bold">Biometric Mismatch</p>
-                                            <p className="text-[10px] text-cyan-800">ENTER OVERRIDE PASSCODE</p>
-                                        </div>
-                                        <input
-                                            type="password"
-                                            value={ciaCode}
-                                            onChange={(e) => setCiaCode(e.target.value)}
-                                            className="w-full bg-black/50 border border-cyan-800 text-cyan-400 p-4 text-center tracking-[0.5em] focus:outline-none focus:border-cyan-400 transition-colors rounded text-xl"
-                                            placeholder="••••••"
-                                            autoFocus
-                                        />
-                                        <button type="submit" className="bg-cyan-600 hover:bg-cyan-500 w-full py-4 text-black font-black tracking-[0.2em] text-xs rounded transition-all hover:shadow-[0_0_20px_cyan]">
-                                            AUTHENTICATE
-                                        </button>
-                                        <div className="pt-8">
-                                            <div className="flex items-center justify-center gap-2 text-[9px] text-red-500/80 animate-pulse">
-                                                <AlertTriangle size={12} />
-                                                UNAUTHORIZED ACCESS IS TREASON
                                             </div>
-                                        </div>
-                                    </form>
-                                )}
-                            </div>
-                        </motion.div>
+                                        ) : (
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-500">
+                                                {CIA_FILES.map(file => (
+                                                    <div
+                                                        key={file.id}
+                                                        onClick={() => setActiveFile(file.id)}
+                                                        className="bg-black/40 border border-cyan-800 p-4 rounded hover:bg-cyan-900/20 hover:border-cyan-400 cursor-pointer group transition-all hover:scale-[1.02] relative overflow-hidden"
+                                                    >
+                                                        <div className="absolute top-0 right-0 p-1 bg-cyan-900/30 rounded-bl text-[8px] text-cyan-500">{file.date}</div>
+                                                        <div className="flex justify-between items-start mb-3">
+                                                            <FileText className="text-cyan-600 group-hover:text-cyan-400 w-8 h-8" />
+                                                            <span className="text-[9px] border border-cyan-900 px-1 py-0.5 rounded text-cyan-700 uppercase">{file.type}</span>
+                                                        </div>
+                                                        <div className="font-bold text-cyan-500 group-hover:text-cyan-300 tracking-wider">{file.id}</div>
+                                                        <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )
+                                    ) : (
+                                        <form onSubmit={handleCiaLogin} className="space-y-6 max-w-xs mx-auto text-center mt-10">
+                                            <div className="w-24 h-24 mx-auto bg-cyan-900/10 rounded-full flex items-center justify-center mb-8 animate-pulse border border-cyan-500/30 relative">
+                                                <div className="absolute inset-0 rounded-full border border-cyan-500/20 animate-ping" />
+                                                <Fingerprint className="w-12 h-12 text-cyan-600" />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <p className="text-cyan-600 text-xs tracking-[0.2em] uppercase font-bold">Biometric Mismatch</p>
+                                                <p className="text-[10px] text-cyan-800">ENTER OVERRIDE PASSCODE</p>
+                                            </div>
+                                            <input
+                                                type="password"
+                                                value={ciaCode}
+                                                onChange={(e) => setCiaCode(e.target.value)}
+                                                className="w-full bg-black/50 border border-cyan-800 text-cyan-400 p-4 text-center tracking-[0.5em] focus:outline-none focus:border-cyan-400 transition-colors rounded text-xl"
+                                                placeholder="••••••"
+                                                autoFocus
+                                            />
+                                            <button type="submit" className="bg-cyan-600 hover:bg-cyan-500 w-full py-4 text-black font-black tracking-[0.2em] text-xs rounded transition-all hover:shadow-[0_0_20px_cyan]">
+                                                AUTHENTICATE
+                                            </button>
+                                            <div className="pt-8">
+                                                <div className="flex items-center justify-center gap-2 text-[9px] text-red-500/80 animate-pulse">
+                                                    <AlertTriangle size={12} />
+                                                    UNAUTHORIZED ACCESS IS TREASON
+                                                </div>
+                                            </div>
+                                        </form>
+                                    )}
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
                 )}
             </AnimatePresence>
@@ -803,34 +814,43 @@ export default function HelicarrierPage() {
             {/* Ship Settings Modal */}
             <AnimatePresence>
                 {isSettingsOpen && (
-                    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            className="bg-slate-900 border border-cyan-500 w-full max-w-lg rounded-xl overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.3)]"
-                        >
-                            <div className="p-4 border-b border-cyan-500/30 flex justify-between items-center bg-cyan-950/30">
-                                <h2 className="text-cyan-400 font-bold uppercase tracking-widest flex items-center gap-2">
-                                    <Settings size={18} /> Ship Configuration
-                                </h2>
-                                <button onClick={() => setIsSettingsOpen(false)}><X size={18} className="text-cyan-600 hover:text-white" /></button>
-                            </div>
-                            <div className="p-6 space-y-6">
-                                <div className="space-y-2">
-                                    <label className="text-xs text-cyan-600 uppercase font-bold">Cockpit Lighting</label>
-                                    <div className="flex flex-wrap gap-2">
-                                        {['AUTO', 'DIM', 'BRIGHT', 'RED ALERT'].map(mode => (
-                                            <button key={mode} className="flex-1 min-w-[80px] bg-black/40 border border-cyan-800 text-[10px] text-cyan-400 py-2 rounded hover:bg-cyan-900/40">{mode}</button>
-                                        ))}
+                    <div className="fixed inset-0 z-[120] overflow-y-auto custom-scrollbar">
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/80 backdrop-blur-md"
+                                onClick={() => setIsSettingsOpen(false)}
+                            />
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.9, opacity: 0 }}
+                                className="relative z-10 bg-slate-900 border border-cyan-500 w-full max-w-lg rounded-xl overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.3)]"
+                            >
+                                <div className="p-4 border-b border-cyan-500/30 flex justify-between items-center bg-cyan-950/30">
+                                    <h2 className="text-cyan-400 font-bold uppercase tracking-widest flex items-center gap-2">
+                                        <Settings size={18} /> Ship Configuration
+                                    </h2>
+                                    <button onClick={() => setIsSettingsOpen(false)}><X size={18} className="text-cyan-600 hover:text-white" /></button>
+                                </div>
+                                <div className="p-6 space-y-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs text-cyan-600 uppercase font-bold">Cockpit Lighting</label>
+                                        <div className="flex flex-wrap gap-2">
+                                            {['AUTO', 'DIM', 'BRIGHT', 'RED ALERT'].map(mode => (
+                                                <button key={mode} className="flex-1 min-w-[80px] bg-black/40 border border-cyan-800 text-[10px] text-cyan-400 py-2 rounded hover:bg-cyan-900/40">{mode}</button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="pt-4 border-t border-cyan-900/30 flex justify-end gap-2">
+                                        <button onClick={() => setIsSettingsOpen(false)} className="px-4 py-2 text-xs text-cyan-600 hover:text-cyan-400">CANCEL</button>
+                                        <button onClick={() => setIsSettingsOpen(false)} className="px-6 py-2 bg-cyan-600 text-black text-xs font-bold rounded hover:bg-cyan-500">SAVE CHANGES</button>
                                     </div>
                                 </div>
-                                <div className="pt-4 border-t border-cyan-900/30 flex justify-end gap-2">
-                                    <button onClick={() => setIsSettingsOpen(false)} className="px-4 py-2 text-xs text-cyan-600 hover:text-cyan-400">CANCEL</button>
-                                    <button onClick={() => setIsSettingsOpen(false)} className="px-6 py-2 bg-cyan-600 text-black text-xs font-bold rounded hover:bg-cyan-500">SAVE CHANGES</button>
-                                </div>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        </div>
                     </div>
                 )}
             </AnimatePresence>

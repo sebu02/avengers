@@ -40,20 +40,20 @@ const WakandaDialog = ({ isOpen, onClose, title, icon, children, accentColor = "
     <AnimatePresence>
         {isOpen && (
             <div className="fixed inset-0 z-[2000] overflow-y-auto custom-scrollbar">
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    onClick={onClose}
-                    className="fixed inset-0 bg-black/80 backdrop-blur-xl"
-                />
                 <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={onClose}
+                        className="fixed inset-0 bg-black/80 backdrop-blur-xl"
+                    />
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}
                         className={clsx(
-                            "relative w-full max-w-2xl bg-slate-900 border overflow-hidden rounded-[2.5rem] shadow-2xl",
+                            "relative z-10 w-full max-w-2xl bg-slate-900 border overflow-hidden rounded-[2.5rem] shadow-2xl",
                             accentColor === "purple" ? "border-purple-500/30" : "border-yellow-500/30"
                         )}
                     >

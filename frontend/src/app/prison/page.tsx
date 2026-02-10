@@ -257,33 +257,36 @@ export default function VillainPrisonPage() {
             {/* Punishment Mode Overlay */}
             <AnimatePresence>
                 {punishmentMode && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 bg-red-950/90 backdrop-blur-xl flex items-center justify-center"
-                    >
-                        <div className="text-center">
+                    <div className="fixed inset-0 z-[200] overflow-y-auto custom-scrollbar">
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
                             <motion.div
-                                animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-                                transition={{ duration: 2, repeat: 9999, repeatType: "loop" }}
-                            >
-                                <AlertTriangle className="w-32 h-32 text-red-500 mx-auto mb-6" />
-                            </motion.div>
-                            <h2 className="text-4xl font-black text-red-500 mb-4">PUNISHMENT PROTOCOL ACTIVE</h2>
-                            <p className="text-xl text-red-400">Deploying countermeasures...</p>
-                            <motion.div
-                                className="mt-8 h-2 w-96 bg-red-950 rounded-full overflow-hidden mx-auto"
-                            >
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-red-950/90 backdrop-blur-xl"
+                            />
+                            <div className="relative z-10 text-center">
                                 <motion.div
-                                    className="h-full bg-red-500"
-                                    initial={{ width: "0%" }}
-                                    animate={{ width: "100%" }}
-                                    transition={{ duration: 5 }}
-                                />
-                            </motion.div>
+                                    animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+                                    transition={{ duration: 2, repeat: 9999, repeatType: "loop" }}
+                                >
+                                    <AlertTriangle className="w-32 h-32 text-red-500 mx-auto mb-6" />
+                                </motion.div>
+                                <h2 className="text-4xl font-black text-red-500 mb-4">PUNISHMENT PROTOCOL ACTIVE</h2>
+                                <p className="text-xl text-red-400">Deploying countermeasures...</p>
+                                <motion.div
+                                    className="mt-8 h-2 w-96 bg-red-950 rounded-full overflow-hidden mx-auto"
+                                >
+                                    <motion.div
+                                        className="h-full bg-red-500"
+                                        initial={{ width: "0%" }}
+                                        animate={{ width: "100%" }}
+                                        transition={{ duration: 5 }}
+                                    />
+                                </motion.div>
+                            </div>
                         </div>
-                    </motion.div>
+                    </div>
                 )}
             </AnimatePresence>
         </div>

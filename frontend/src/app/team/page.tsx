@@ -199,178 +199,180 @@ export default function TeamPage() {
             {/* Access File Modal */}
             <AnimatePresence>
                 {selectedHero && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-                            onClick={() => !deploying && setSelectedHero(null)}
-                        />
-                        <motion.div
-                            layoutId={`card-${selectedHero.id}`}
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            className="relative z-60 w-full max-w-5xl bg-slate-950 border border-primary/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(14,165,233,0.2)] flex flex-col md:flex-row max-h-[90vh]"
-                        >
-                            {/* Decorative Tech Lines */}
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
-                            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+                    <div className="fixed inset-0 z-[110] overflow-y-auto custom-scrollbar">
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+                                onClick={() => !deploying && setSelectedHero(null)}
+                            />
+                            <motion.div
+                                layoutId={`card-${selectedHero.id}`}
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.9, opacity: 0 }}
+                                className="relative z-10 w-full max-w-5xl bg-slate-950 border border-primary/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(14,165,233,0.2)] flex flex-col md:flex-row max-h-[90vh]"
+                            >
+                                {/* Decorative Tech Lines */}
+                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+                                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
 
-                            {/* Full Screen Deployment Animation Overlay */}
-                            {deploying && (
-                                <DeploymentAnimation
-                                    heroId={selectedHero.id}
-                                    onComplete={handleAnimationComplete}
-                                />
-                            )}
-
-                            {!deploying && (
-                                <button
-                                    onClick={() => setSelectedHero(null)}
-                                    className="absolute top-4 right-4 z-50 p-2 bg-black/50 rounded-full text-white hover:text-primary transition-colors border border-white/10"
-                                >
-                                    <span className="sr-only">Close</span>
-                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            )}
-
-                            {/* Image Section */}
-                            <div className="w-full md:w-5/12 relative bg-slate-900 overflow-hidden min-h-[300px] md:min-h-full border-r border-white/5">
-                                <div className={`absolute inset-0 bg-gradient-to-br ${selectedHero.color} opacity-20`} />
-                                <Image
-                                    src={selectedHero.image}
-                                    alt={selectedHero.alias}
-                                    fill
-                                    className="object-cover opacity-90"
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                />
-                                <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent z-10">
-                                    <motion.h2
-                                        initial={{ y: 20, opacity: 0 }}
-                                        animate={{ y: 0, opacity: 1 }}
-                                        transition={{ delay: 0.2 }}
-                                        className="text-4xl font-black uppercase italic tracking-wider text-white"
-                                    >
-                                        {selectedHero.alias}
-                                    </motion.h2>
-                                    <motion.p
-                                        initial={{ y: 20, opacity: 0 }}
-                                        animate={{ y: 0, opacity: 1 }}
-                                        transition={{ delay: 0.3 }}
-                                        className="text-primary font-mono text-sm tracking-[0.2em] mt-2 uppercase"
-                                    >
-                                        Real Name: {selectedHero.name}
-                                    </motion.p>
-                                </div>
-                            </div>
-
-                            {/* Data Section */}
-                            <div className="w-full md:w-7/12 p-8 overflow-y-auto bg-slate-950/95 relative flex flex-col">
-
-                                {/* Tabs */}
-                                <div className="flex gap-4 mb-6 border-b border-white/10 pb-4">
-                                    <button
-                                        onClick={() => setView('PROFILE')}
-                                        className={clsx(
-                                            "uppercase font-mono text-sm tracking-widest pb-2 border-b-2 transition-all",
-                                            view === 'PROFILE' ? "border-primary text-white" : "border-transparent text-muted-foreground hover:text-white"
-                                        )}
-                                    >
-                                        Profile Stats
-                                    </button>
-                                    <button
-                                        onClick={() => setView('INVENTORY')}
-                                        className={clsx(
-                                            "uppercase font-mono text-sm tracking-widest pb-2 border-b-2 transition-all",
-                                            view === 'INVENTORY' ? "border-primary text-white" : "border-transparent text-muted-foreground hover:text-white"
-                                        )}
-                                    >
-                                        Gear & Loadout
-                                    </button>
-                                </div>
-
-                                {view === 'PROFILE' ? (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
-                                        <div>
-                                            <h3 className="text-sm font-mono text-primary/70 uppercase tracking-widest mb-2 flex items-center gap-2">
-                                                <Shield className="w-4 h-4" />
-                                                S.H.I.E.L.D. Profile
-                                            </h3>
-                                            <div className="grid grid-cols-2 gap-4 text-sm border-l-2 border-primary/20 pl-4">
-                                                <div>
-                                                    <span className="block text-muted-foreground text-xs uppercase">Role</span>
-                                                    <span className="text-white font-medium">{selectedHero.role}</span>
-                                                </div>
-                                                <div>
-                                                    <span className="block text-muted-foreground text-xs uppercase">Clearance</span>
-                                                    <span className="text-white font-medium">Level 8</span>
-                                                </div>
-                                                <div>
-                                                    <span className="block text-muted-foreground text-xs uppercase">Status</span>
-                                                    <span className={clsx("font-bold",
-                                                        selectedHero.status === "Active" ? "text-green-500" :
-                                                            selectedHero.status === "Off-World" ? "text-purple-400" : "text-yellow-500"
-                                                    )}>{selectedHero.status}</span>
-                                                </div>
-                                                <div>
-                                                    <span className="block text-muted-foreground text-xs uppercase">ID</span>
-                                                    <span className="text-white font-mono">AV-{selectedHero.id.substring(0, 3).toUpperCase()}-99</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <h3 className="text-sm font-mono text-primary/70 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                                <Activity className="w-4 h-4" />
-                                                Power Grid
-                                            </h3>
-                                            <div className="space-y-4">
-                                                {Object.entries(selectedHero.stats).map(([stat, value], i) => (
-                                                    <div key={stat}>
-                                                        <div className="flex justify-between text-xs uppercase mb-1">
-                                                            <span className="text-muted-foreground">{stat}</span>
-                                                            <span className="text-primary font-mono">{value}%</span>
-                                                        </div>
-                                                        <div className="w-full bg-secondary/30 h-2 rounded-full overflow-hidden">
-                                                            <motion.div
-                                                                initial={{ width: 0 }}
-                                                                animate={{ width: `${value}%` }}
-                                                                transition={{ delay: 0.4 + (i * 0.1), duration: 1 }}
-                                                                className={`h-full bg-gradient-to-r ${selectedHero.color}`}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <div className="border-t border-white/10 pt-6">
-                                            <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">Capabilities</h3>
-                                            <p className="text-sm text-gray-400 leading-relaxed font-mono">
-                                                Subject demonstrates exceptional abilities consistent with [REDACTED] classification. Recommended for high-priority missions requiring specialized intervention.
-                                            </p>
-                                        </div>
-                                    </motion.div>
-                                ) : (
-                                    <AvengerInventory heroId={selectedHero.id} color={selectedHero.color} />
+                                {/* Full Screen Deployment Animation Overlay */}
+                                {deploying && (
+                                    <DeploymentAnimation
+                                        heroId={selectedHero.id}
+                                        onComplete={handleAnimationComplete}
+                                    />
                                 )}
 
-                                <div className="mt-auto pt-6">
+                                {!deploying && (
                                     <button
-                                        onClick={handleDeploy}
-                                        disabled={deploying}
-                                        className="w-full py-4 border border-primary/30 text-primary uppercase font-bold tracking-[0.2em] hover:bg-primary/10 transition-colors flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(14,165,233,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+                                        onClick={() => setSelectedHero(null)}
+                                        className="absolute top-4 right-4 z-50 p-2 bg-black/50 rounded-full text-white hover:text-primary transition-colors border border-white/10"
                                     >
-                                        <Target className="w-4 h-4" />
-                                        Initiate Deployment
+                                        <span className="sr-only">Close</span>
+                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
                                     </button>
+                                )}
+
+                                {/* Image Section */}
+                                <div className="w-full md:w-5/12 relative bg-slate-900 overflow-hidden min-h-[300px] md:min-h-full border-r border-white/5 shrink-0">
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${selectedHero.color} opacity-20`} />
+                                    <Image
+                                        src={selectedHero.image}
+                                        alt={selectedHero.alias}
+                                        fill
+                                        className="object-cover opacity-90"
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                    />
+                                    <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent z-10">
+                                        <motion.h2
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{ delay: 0.2 }}
+                                            className="text-4xl font-black uppercase italic tracking-wider text-white"
+                                        >
+                                            {selectedHero.alias}
+                                        </motion.h2>
+                                        <motion.p
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{ delay: 0.3 }}
+                                            className="text-primary font-mono text-sm tracking-[0.2em] mt-2 uppercase"
+                                        >
+                                            Real Name: {selectedHero.name}
+                                        </motion.p>
+                                    </div>
                                 </div>
-                            </div>
-                        </motion.div>
+
+                                {/* Data Section */}
+                                <div className="w-full md:w-7/12 p-8 overflow-y-auto bg-slate-950/95 relative flex flex-col">
+
+                                    {/* Tabs */}
+                                    <div className="flex gap-4 mb-6 border-b border-white/10 pb-4">
+                                        <button
+                                            onClick={() => setView('PROFILE')}
+                                            className={clsx(
+                                                "uppercase font-mono text-sm tracking-widest pb-2 border-b-2 transition-all",
+                                                view === 'PROFILE' ? "border-primary text-white" : "border-transparent text-muted-foreground hover:text-white"
+                                            )}
+                                        >
+                                            Profile Stats
+                                        </button>
+                                        <button
+                                            onClick={() => setView('INVENTORY')}
+                                            className={clsx(
+                                                "uppercase font-mono text-sm tracking-widest pb-2 border-b-2 transition-all",
+                                                view === 'INVENTORY' ? "border-primary text-white" : "border-transparent text-muted-foreground hover:text-white"
+                                            )}
+                                        >
+                                            Gear & Loadout
+                                        </button>
+                                    </div>
+
+                                    {view === 'PROFILE' ? (
+                                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+                                            <div>
+                                                <h3 className="text-sm font-mono text-primary/70 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                                    <Shield className="w-4 h-4" />
+                                                    S.H.I.E.L.D. Profile
+                                                </h3>
+                                                <div className="grid grid-cols-2 gap-4 text-sm border-l-2 border-primary/20 pl-4">
+                                                    <div>
+                                                        <span className="block text-muted-foreground text-xs uppercase">Role</span>
+                                                        <span className="text-white font-medium">{selectedHero.role}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span className="block text-muted-foreground text-xs uppercase">Clearance</span>
+                                                        <span className="text-white font-medium">Level 8</span>
+                                                    </div>
+                                                    <div>
+                                                        <span className="block text-muted-foreground text-xs uppercase">Status</span>
+                                                        <span className={clsx("font-bold",
+                                                            selectedHero.status === "Active" ? "text-green-500" :
+                                                                selectedHero.status === "Off-World" ? "text-purple-400" : "text-yellow-500"
+                                                        )}>{selectedHero.status}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span className="block text-muted-foreground text-xs uppercase">ID</span>
+                                                        <span className="text-white font-mono">AV-{selectedHero.id.substring(0, 3).toUpperCase()}-99</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <h3 className="text-sm font-mono text-primary/70 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                                    <Activity className="w-4 h-4" />
+                                                    Power Grid
+                                                </h3>
+                                                <div className="space-y-4">
+                                                    {Object.entries(selectedHero.stats).map(([stat, value], i) => (
+                                                        <div key={stat}>
+                                                            <div className="flex justify-between text-xs uppercase mb-1">
+                                                                <span className="text-muted-foreground">{stat}</span>
+                                                                <span className="text-primary font-mono">{value}%</span>
+                                                            </div>
+                                                            <div className="w-full bg-secondary/30 h-2 rounded-full overflow-hidden">
+                                                                <motion.div
+                                                                    initial={{ width: 0 }}
+                                                                    animate={{ width: `${value}%` }}
+                                                                    transition={{ delay: 0.4 + (i * 0.1), duration: 1 }}
+                                                                    className={`h-full bg-gradient-to-r ${selectedHero.color}`}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="border-t border-white/10 pt-6">
+                                                <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">Capabilities</h3>
+                                                <p className="text-sm text-gray-400 leading-relaxed font-mono">
+                                                    Subject demonstrates exceptional abilities consistent with [REDACTED] classification. Recommended for high-priority missions requiring specialized intervention.
+                                                </p>
+                                            </div>
+                                        </motion.div>
+                                    ) : (
+                                        <AvengerInventory heroId={selectedHero.id} color={selectedHero.color} />
+                                    )}
+
+                                    <div className="mt-auto pt-6">
+                                        <button
+                                            onClick={handleDeploy}
+                                            disabled={deploying}
+                                            className="w-full py-4 border border-primary/30 text-primary uppercase font-bold tracking-[0.2em] hover:bg-primary/10 transition-colors flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(14,165,233,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <Target className="w-4 h-4" />
+                                            Initiate Deployment
+                                        </button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
                 )}
             </AnimatePresence>

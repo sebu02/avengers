@@ -430,22 +430,26 @@ export default function CommunicationsPage() {
             {/* Call Interface Modal */}
             <AnimatePresence>
                 {activeCall && callStatus !== 'idle' && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center"
-                    >
-                        <CallInterface
-                            member={activeCall}
-                            status={callStatus}
-                            isMuted={isMuted}
-                            isVideoOn={isVideoOn}
-                            onMuteToggle={() => setIsMuted(!isMuted)}
-                            onVideoToggle={() => setIsVideoOn(!isVideoOn)}
-                            onEndCall={endCall}
-                        />
-                    </motion.div>
+                    <div className="fixed inset-0 z-[100] overflow-y-auto custom-scrollbar">
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/90 backdrop-blur-xl"
+                                onClick={endCall}
+                            />
+                            <CallInterface
+                                member={activeCall}
+                                status={callStatus}
+                                isMuted={isMuted}
+                                isVideoOn={isVideoOn}
+                                onMuteToggle={() => setIsMuted(!isMuted)}
+                                onVideoToggle={() => setIsVideoOn(!isVideoOn)}
+                                onEndCall={endCall}
+                            />
+                        </div>
+                    </div>
                 )}
             </AnimatePresence>
         </div>
@@ -459,7 +463,7 @@ const CallInterface = ({ member, status, isMuted, isVideoOn, onMuteToggle, onVid
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            className="w-full max-w-4xl bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-cyan-500 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.5)]"
+            className="relative z-10 w-full max-w-4xl bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-cyan-500 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.5)]"
         >
             {/* Video Feed Area */}
             <div className="relative h-96 bg-black flex items-center justify-center">

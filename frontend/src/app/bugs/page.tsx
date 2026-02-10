@@ -255,19 +255,19 @@ export default function DamageAssessmentPage() {
             <AnimatePresence>
                 {selectedReport && (
                     <div className="fixed inset-0 z-[100] overflow-y-auto custom-scrollbar">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black/95 backdrop-blur-2xl"
-                            onClick={() => setSelectedReport(null)}
-                        />
                         <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/95 backdrop-blur-2xl"
+                                onClick={() => setSelectedReport(null)}
+                            />
                             <motion.div
                                 initial={{ scale: 0.95, opacity: 0, y: 30 }}
                                 animate={{ scale: 1, opacity: 1, y: 0 }}
                                 exit={{ scale: 0.95, opacity: 0, y: 30 }}
-                                className="relative w-full max-w-3xl bg-slate-950 border-2 border-orange-500/30 rounded-[44px] overflow-hidden shadow-[0_0_100px_rgba(249,115,22,0.15)]"
+                                className="relative z-10 w-full max-w-3xl bg-slate-950 border-2 border-orange-500/30 rounded-[44px] overflow-hidden shadow-[0_0_100px_rgba(249,115,22,0.15)]"
                             >
                                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
 
@@ -379,13 +379,19 @@ export default function DamageAssessmentPage() {
             <AnimatePresence>
                 {isModalOpen && (
                     <div className="fixed inset-0 z-[110] overflow-y-auto custom-scrollbar">
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/95 backdrop-blur-md" onClick={closeModal} />
                         <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/95 backdrop-blur-md"
+                                onClick={closeModal}
+                            />
                             <motion.div
                                 initial={{ scale: 0.9, opacity: 0, y: 30 }}
                                 animate={{ scale: 1, opacity: 1, y: 0 }}
                                 exit={{ scale: 0.9, opacity: 0, y: 30 }}
-                                className="relative w-full max-w-xl bg-slate-900 border-2 border-orange-500/30 p-12 space-y-10 rounded-[40px] shadow-[0_0_80px_rgba(249,115,22,0.2)]"
+                                className="relative z-10 w-full max-w-xl bg-slate-900 border-2 border-orange-500/30 p-12 space-y-10 rounded-[40px] shadow-[0_0_80px_rgba(249,115,22,0.2)]"
                             >
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-3">
