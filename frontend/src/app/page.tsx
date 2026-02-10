@@ -262,101 +262,103 @@ export default function AvengersDashboard() {
             {/* INTERACTIVE DIALOG OVERLAY */}
             <AnimatePresence>
                 {selectedItem && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <div className="fixed inset-0 z-[100] overflow-y-auto custom-scrollbar">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-black/90 backdrop-blur-xl"
+                            className="fixed inset-0 bg-black/90 backdrop-blur-xl"
                             onClick={() => setSelectedItem(null)}
                         />
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                            className="relative w-full max-w-2xl bg-slate-950 border-2 border-cyan-500/30 rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.3)]"
-                        >
-                            {/* Header Tech Details */}
-                            <div className="h-1.5 w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                                animate={{ scale: 1, opacity: 1, y: 0 }}
+                                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                                className="relative w-full max-w-2xl bg-slate-950 border-2 border-cyan-500/30 rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.3)]"
+                            >
+                                {/* Header Tech Details */}
+                                <div className="h-1.5 w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
 
-                            <div className="p-10 space-y-8 relative">
-                                <button onClick={() => setSelectedItem(null)} className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors cursor-pointer p-2 hover:bg-white/5 rounded-full ring-1 ring-white/10">
-                                    <X size={20} />
-                                </button>
+                                <div className="p-10 space-y-8 relative">
+                                    <button onClick={() => setSelectedItem(null)} className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors cursor-pointer p-2 hover:bg-white/5 rounded-full ring-1 ring-white/10">
+                                        <X size={20} />
+                                    </button>
 
-                                <div className="space-y-2">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-1.5 h-6 bg-cyan-500 shadow-[0_0_10px_cyan]" />
-                                        <span className="text-[10px] font-black text-cyan-500 uppercase tracking-[0.5em]">{selectedItem.type} SUMMARY</span>
-                                    </div>
-                                    <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">
-                                        {selectedItem.data.title || selectedItem.data.location || selectedItem.data.name || "INTEL FEED"}
-                                    </h2>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                    <div className="space-y-6">
-                                        <div className="p-6 bg-white/5 border border-white/10 rounded-2xl relative group overflow-hidden">
-                                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-500">
-                                                <Info size={40} className="text-cyan-500" />
-                                            </div>
-                                            <p className="text-slate-300 font-medium text-sm leading-relaxed relative z-10 italic">
-                                                "{selectedItem.data.detail || selectedItem.data.intel || selectedItem.data.bio || selectedItem.data.message || "No further tactical data provided at this interval."}"
-                                            </p>
+                                    <div className="space-y-2">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-1.5 h-6 bg-cyan-500 shadow-[0_0_10px_cyan]" />
+                                            <span className="text-[10px] font-black text-cyan-500 uppercase tracking-[0.5em]">{selectedItem.type} SUMMARY</span>
                                         </div>
-
-                                        {(selectedItem.data.status || selectedItem.data.energy) && (
-                                            <div className="flex items-center gap-4">
-                                                {selectedItem.data.status && (
-                                                    <div className="px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
-                                                        <span className="text-[8px] font-black text-cyan-500 uppercase block mb-0.5">Current Status</span>
-                                                        <span className="text-xs font-black text-white uppercase">{selectedItem.data.status}</span>
-                                                    </div>
-                                                )}
-                                                {selectedItem.data.energy && (
-                                                    <div className="px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-                                                        <span className="text-[8px] font-black text-yellow-500 uppercase block mb-0.5">Energy Reserve</span>
-                                                        <span className="text-xs font-black text-white uppercase">{selectedItem.data.energy}%</span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
+                                        <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter" >
+                                            {selectedItem.data.title || selectedItem.data.location || selectedItem.data.name || "INTEL FEED"}
+                                        </h2>
                                     </div>
 
-                                    <div className="space-y-6">
-                                        <div className="aspect-video bg-black/60 rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center relative">
-                                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)] z-10" />
-                                            <Crosshair className="text-cyan-500/20 absolute z-0 animate-spin-slow" size={100} />
-                                            <span className="text-[10px] font-black text-cyan-500/40 uppercase absolute bottom-4 tracking-widest z-20">ENCRYPTED SENSORS ACTIVE</span>
-                                            {selectedItem.data.coordinates && (
-                                                <div className="text-[10px] font-mono text-cyan-400 z-20 bg-black/40 px-3 py-1 border border-cyan-400/20 rounded-full">
-                                                    COORD: {selectedItem.data.coordinates}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                        <div className="space-y-6">
+                                            <div className="p-6 bg-white/5 border border-white/10 rounded-2xl relative group overflow-hidden">
+                                                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-500">
+                                                    <Info size={40} className="text-cyan-500" />
+                                                </div>
+                                                <p className="text-slate-300 font-medium text-sm leading-relaxed relative z-10 italic">
+                                                    "{selectedItem.data.detail || selectedItem.data.intel || selectedItem.data.bio || selectedItem.data.message || "No further tactical data provided at this interval."}"
+                                                </p>
+                                            </div>
+
+                                            {(selectedItem.data.status || selectedItem.data.energy) && (
+                                                <div className="flex items-center gap-4">
+                                                    {selectedItem.data.status && (
+                                                        <div className="px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
+                                                            <span className="text-[8px] font-black text-cyan-500 uppercase block mb-0.5">Current Status</span>
+                                                            <span className="text-xs font-black text-white uppercase">{selectedItem.data.status}</span>
+                                                        </div>
+                                                    )}
+                                                    {selectedItem.data.energy && (
+                                                        <div className="px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                                                            <span className="text-[8px] font-black text-yellow-500 uppercase block mb-0.5">Energy Reserve</span>
+                                                            <span className="text-xs font-black text-white uppercase">{selectedItem.data.energy}%</span>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             )}
                                         </div>
 
-                                        <button className="w-full py-4 bg-cyan-500 text-black font-black text-xs tracking-widest uppercase hover:bg-cyan-400 transition-all flex items-center justify-center gap-3 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.3)] group active:scale-95">
-                                            <Activity size={16} className="group-hover:rotate-12 transition-transform" /> ANALYZE TACTICAL DATA
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                                        <div className="space-y-6">
+                                            <div className="aspect-video bg-black/60 rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center relative">
+                                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)] z-10" />
+                                                <Crosshair className="text-cyan-500/20 absolute z-0 animate-spin-slow" size={100} />
+                                                <span className="text-[10px] font-black text-cyan-500/40 uppercase absolute bottom-4 tracking-widest z-20">ENCRYPTED SENSORS ACTIVE</span>
+                                                {selectedItem.data.coordinates && (
+                                                    <div className="text-[10px] font-mono text-cyan-400 z-20 bg-black/40 px-3 py-1 border border-cyan-400/20 rounded-full">
+                                                        COORD: {selectedItem.data.coordinates}
+                                                    </div>
+                                                )}
+                                            </div>
 
-                            {/* Footer Stat Bar */}
-                            <div className="bg-cyan-950/20 p-4 border-t border-cyan-500/20 flex justify-between items-center">
-                                <div className="flex gap-4">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                        <span className="text-[8px] font-black text-green-500 uppercase tracking-widest">JARVIS CONNECTED</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <TrendingUp size={10} className="text-cyan-500" />
-                                        <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">LIVE BITRATE: 1.4 TBPS</span>
+                                            <button className="w-full py-4 bg-cyan-500 text-black font-black text-xs tracking-widest uppercase hover:bg-cyan-400 transition-all flex items-center justify-center gap-3 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.3)] group active:scale-95">
+                                                <Activity size={16} className="group-hover:rotate-12 transition-transform" /> ANALYZE TACTICAL DATA
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <span className="text-[8px] font-mono text-slate-600 uppercase">ACCESS LEVEL: RED-DELTA</span>
-                            </div>
-                        </motion.div>
+
+                                {/* Footer Stat Bar */}
+                                <div className="bg-cyan-950/20 p-4 border-t border-cyan-500/20 flex justify-between items-center">
+                                    <div className="flex gap-4">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                            <span className="text-[8px] font-black text-green-500 uppercase tracking-widest">JARVIS CONNECTED</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <TrendingUp size={10} className="text-cyan-500" />
+                                            <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">LIVE BITRATE: 1.4 TBPS</span>
+                                        </div>
+                                    </div>
+                                    <span className="text-[8px] font-mono text-slate-600 uppercase" >ACCESS LEVEL: RED-DELTA</span>
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
                 )}
             </AnimatePresence>
