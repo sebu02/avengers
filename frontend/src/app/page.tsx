@@ -275,7 +275,7 @@ export default function AvengersDashboard() {
                                 initial={{ scale: 0.9, opacity: 0, y: 20 }}
                                 animate={{ scale: 1, opacity: 1, y: 0 }}
                                 exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                                className="relative w-full max-w-2xl bg-slate-950 border-2 border-cyan-500/30 rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.3)]"
+                                className="relative z-10 w-full max-w-2xl bg-slate-950 border-2 border-cyan-500/30 rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.3)]"
                             >
                                 {/* Header Tech Details */}
                                 <div className="h-1.5 w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />

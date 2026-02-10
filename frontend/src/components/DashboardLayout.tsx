@@ -119,7 +119,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     isMobile ? "pt-16" : "pt-0"
                 )}>
                     <motion.div
-                        animate={isShuttingDown ? { opacity: 0, scale: 0.95, filter: "blur(10px)" } : { opacity: 1, scale: 1, filter: "blur(0px)" }}
+                        animate={isShuttingDown ? { opacity: 0, scale: 0.95, filter: "blur(10px)" } : { opacity: 1 }}
                         transition={{ duration: 1 }}
                         className={clsx(
                             "transition-all duration-300",

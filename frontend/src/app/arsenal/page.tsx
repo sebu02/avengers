@@ -376,53 +376,61 @@ export default function WeaponryPage() {
             {/* Authorization Modal */}
             <AnimatePresence>
                 {showAuthModal && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center"
-                    >
-                        <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.8, opacity: 0 }}
-                            className="bg-slate-900 border-2 border-red-600 rounded-xl p-8 max-w-md w-full"
-                        >
-                            <div className="text-center mb-6">
-                                <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4 animate-pulse" />
-                                <h2 className="text-2xl font-black text-red-500 mb-2">AUTHORIZATION REQUIRED</h2>
-                                <p className="text-sm text-gray-400">This weapon requires director-level clearance</p>
-                            </div>
-
-                            <input
-                                type="password"
-                                value={authCode}
-                                onChange={(e) => setAuthCode(e.target.value)}
-                                placeholder="Enter Authorization Code"
-                                className="w-full bg-black/50 border-2 border-red-600 text-red-500 p-4 text-center tracking-[0.5em] focus:outline-none focus:border-red-400 transition-colors rounded text-xl font-mono mb-4"
-                                autoFocus
+                    <div className="fixed inset-0 z-50 overflow-y-auto custom-scrollbar">
+                        <div className="min-h-full flex items-center justify-center p-4 text-center">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/90 backdrop-blur-xl"
+                                onClick={() => {
+                                    setShowAuthModal(false);
+                                    setPendingLaunch(null);
+                                    setAuthCode("");
+                                }}
                             />
+                            <motion.div
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.8, opacity: 0 }}
+                                className="relative z-10 bg-slate-900 border-2 border-red-600 rounded-xl p-8 max-w-md w-full shadow-[0_0_50px_rgba(220,38,38,0.3)]"
+                            >
+                                <div className="text-center mb-6">
+                                    <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4 animate-pulse" />
+                                    <h2 className="text-2xl font-black text-red-500 mb-2">AUTHORIZATION REQUIRED</h2>
+                                    <p className="text-sm text-gray-400">This weapon requires director-level clearance</p>
+                                </div>
 
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={() => {
-                                        setShowAuthModal(false);
-                                        setPendingLaunch(null);
-                                        setAuthCode("");
-                                    }}
-                                    className="flex-1 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-all"
-                                >
-                                    CANCEL
-                                </button>
-                                <button
-                                    onClick={handleAuth}
-                                    className="flex-1 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-500 transition-all"
-                                >
-                                    AUTHORIZE
-                                </button>
-                            </div>
-                        </motion.div>
-                    </motion.div>
+                                <input
+                                    type="password"
+                                    value={authCode}
+                                    onChange={(e) => setAuthCode(e.target.value)}
+                                    placeholder="Enter Authorization Code"
+                                    className="w-full bg-black/50 border-2 border-red-600 text-red-500 p-4 text-center tracking-[0.5em] focus:outline-none focus:border-red-400 transition-colors rounded text-xl font-mono mb-4"
+                                    autoFocus
+                                />
+
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => {
+                                            setShowAuthModal(false);
+                                            setPendingLaunch(null);
+                                            setAuthCode("");
+                                        }}
+                                        className="flex-1 py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-all"
+                                    >
+                                        CANCEL
+                                    </button>
+                                    <button
+                                        onClick={handleAuth}
+                                        className="flex-1 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-500 transition-all"
+                                    >
+                                        AUTHORIZE
+                                    </button>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </div>
                 )}
             </AnimatePresence>
         </div>

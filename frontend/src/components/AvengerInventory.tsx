@@ -319,132 +319,134 @@ export default function AvengerInventory({ heroId, color }: Props) {
 }
 
 const ItemDetailModal = ({ item, onClose, onRepair }: { item: InventoryItem, onClose: () => void, onRepair: (id: string) => void }) => (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/80 backdrop-blur-md"
-            onClick={onClose}
-        />
-        <motion.div
-            layoutId={`inventory-${item.id}`}
-            className="relative z-[110] bg-slate-900 border border-primary/40 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] w-full max-w-md"
-        >
-            <div className="h-48 relative bg-black/50 overflow-hidden group">
-                <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+    <div className="fixed inset-0 z-[100] overflow-y-auto custom-scrollbar">
+        <div className="min-h-full flex items-center justify-center p-4">
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/80 backdrop-blur-md"
+                onClick={onClose}
+            />
+            <motion.div
+                layoutId={`inventory-${item.id}`}
+                className="relative z-10 bg-slate-900 border border-primary/40 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] w-full max-w-md"
+            >
+                <div className="h-48 relative bg-black/50 overflow-hidden group">
+                    <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
 
-                {/* HUD Overlay Elements */}
-                <div className="absolute top-0 left-0 w-full h-full p-4 pointer-events-none">
-                    <div className="absolute top-4 left-4 border-l-2 border-t-2 border-primary/50 w-4 h-4" />
-                    <div className="absolute top-4 right-4 border-r-2 border-t-2 border-primary/50 w-4 h-4" />
-                    <div className="absolute bottom-4 left-4 border-l-2 border-b-2 border-primary/50 w-4 h-4" />
-                    <div className="absolute bottom-4 right-4 border-r-2 border-b-2 border-primary/50 w-4 h-4" />
-                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay" />
-                </div>
-
-                <button
-                    onClick={onClose}
-                    className="absolute top-2 right-2 p-2 bg-black/50 rounded-full text-white/70 hover:text-white hover:bg-primary/20 transition-all z-20"
-                >
-                    <span className="sr-only">Close</span>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-
-                <div className="absolute top-4 left-4 z-10">
-                    <span className={clsx(
-                        "text-[10px] font-mono px-2 py-1 rounded border uppercase tracking-wider backdrop-blur-sm",
-                        item.condition === 'OPERATIONAL' ? "bg-green-500/10 border-green-500 text-green-500 shadow-[0_0_10px_rgba(34,197,94,0.2)]" :
-                            item.condition === 'DAMAGED' ? "bg-yellow-500/10 border-yellow-500 text-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.2)]" :
-                                "bg-red-500/10 border-red-500 text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.2)]"
-                    )}>
-                        STATUS: {item.condition}
-                    </span>
-                </div>
-            </div>
-
-            <div className="p-6 space-y-6 relative overflow-hidden">
-                {/* Background Tech GFX */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-[radial-gradient(circle_at_center,rgba(14,165,233,0.05)_0%,transparent_70%)] pointer-events-none" />
-
-                <div className="relative z-10">
-                    <div className="flex items-start justify-between mb-4">
-                        <div>
-                            <h2 className="text-xl font-bold uppercase text-white tracking-widest flex items-center gap-2">
-                                {item.name}
-                                {item.shared && <Share2 className="w-4 h-4 text-primary/70" />}
-                            </h2>
-                            <p className="text-primary text-xs font-mono mt-1 flex items-center gap-2">
-                                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                                {item.type} CLASS IDENTIFIED
-                            </p>
-                        </div>
-                        <item.icon className="w-8 h-8 text-white/10" />
+                    {/* HUD Overlay Elements */}
+                    <div className="absolute top-0 left-0 w-full h-full p-4 pointer-events-none">
+                        <div className="absolute top-4 left-4 border-l-2 border-t-2 border-primary/50 w-4 h-4" />
+                        <div className="absolute top-4 right-4 border-r-2 border-t-2 border-primary/50 w-4 h-4" />
+                        <div className="absolute bottom-4 left-4 border-l-2 border-b-2 border-primary/50 w-4 h-4" />
+                        <div className="absolute bottom-4 right-4 border-r-2 border-b-2 border-primary/50 w-4 h-4" />
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay" />
                     </div>
 
-                    <p className="text-sm text-gray-400 leading-relaxed border-l-2 border-primary/20 pl-3 font-mono">
-                        {item.description}
-                    </p>
-                </div>
+                    <button
+                        onClick={onClose}
+                        className="absolute top-2 right-2 p-2 bg-black/50 rounded-full text-white/70 hover:text-white hover:bg-primary/20 transition-all z-20"
+                    >
+                        <span className="sr-only">Close</span>
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
 
-                <div className="bg-slate-950/50 p-4 rounded border border-white/5 space-y-3 relative overflow-hidden">
-                    {/* Scanning Line Animation */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent h-full w-full animate-[scan_2s_ease-in-out_infinite]" />
-
-                    <div className="flex justify-between items-center text-xs font-mono uppercase text-muted-foreground relative z-10">
-                        <span>Integrity Analysis</span>
+                    <div className="absolute top-4 left-4 z-10">
                         <span className={clsx(
-                            item.condition === 'OPERATIONAL' ? "text-green-500" :
-                                item.condition === 'DAMAGED' ? "text-yellow-500" : "text-red-500"
-                        )}>{item.condition === 'OPERATIONAL' ? '100%' : item.condition === 'DAMAGED' ? '64%' : '12%'}</span>
-                    </div>
-
-                    <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden relative z-10">
-                        {/* Bar Background Stripes */}
-                        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:4px_100%]" />
-
-                        <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: item.condition === 'OPERATIONAL' ? '100%' : item.condition === 'DAMAGED' ? '64%' : '12%' }}
-                            transition={{ duration: 1, ease: "easeOut" }}
-                            className={clsx(
-                                "h-full relative",
-                                item.condition === 'OPERATIONAL' ? "bg-green-500" :
-                                    item.condition === 'DAMAGED' ? "bg-yellow-500" : "bg-red-500"
-                            )}
-                        >
-                            <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:10px_10px] animate-[progress_1s_linear_infinite]" />
-                        </motion.div>
+                            "text-[10px] font-mono px-2 py-1 rounded border uppercase tracking-wider backdrop-blur-sm",
+                            item.condition === 'OPERATIONAL' ? "bg-green-500/10 border-green-500 text-green-500 shadow-[0_0_10px_rgba(34,197,94,0.2)]" :
+                                item.condition === 'DAMAGED' ? "bg-yellow-500/10 border-yellow-500 text-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.2)]" :
+                                    "bg-red-500/10 border-red-500 text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.2)]"
+                        )}>
+                            STATUS: {item.condition}
+                        </span>
                     </div>
                 </div>
 
-                <div className="pt-2 relative z-10">
-                    {item.condition !== 'OPERATIONAL' ? (
-                        <button
-                            onClick={() => onRepair(item.id)}
-                            className="w-full py-3 bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 uppercase font-bold text-xs tracking-widest flex items-center justify-center gap-2 transition-all hover:shadow-[0_0_15px_rgba(234,179,8,0.2)] group/btn relative overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-yellow-500/10 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
-                            <Wrench className="w-4 h-4 relative z-10" />
-                            <span className="relative z-10">Submit Repair Order</span>
-                        </button>
-                    ) : (
-                        <div className="w-full py-3 bg-green-500/5 border border-green-500/20 text-green-500/50 uppercase font-bold text-xs tracking-widest flex items-center justify-center gap-2 cursor-not-allowed">
-                            <CheckCircle className="w-4 h-4" />
-                            Systems Nominal
+                <div className="p-6 space-y-6 relative overflow-hidden">
+                    {/* Background Tech GFX */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-[radial-gradient(circle_at_center,rgba(14,165,233,0.05)_0%,transparent_70%)] pointer-events-none" />
+
+                    <div className="relative z-10">
+                        <div className="flex items-start justify-between mb-4">
+                            <div>
+                                <h2 className="text-xl font-bold uppercase text-white tracking-widest flex items-center gap-2">
+                                    {item.name}
+                                    {item.shared && <Share2 className="w-4 h-4 text-primary/70" />}
+                                </h2>
+                                <p className="text-primary text-xs font-mono mt-1 flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                                    {item.type} CLASS IDENTIFIED
+                                </p>
+                            </div>
+                            <item.icon className="w-8 h-8 text-white/10" />
                         </div>
-                    )}
+
+                        <p className="text-sm text-gray-400 leading-relaxed border-l-2 border-primary/20 pl-3 font-mono">
+                            {item.description}
+                        </p>
+                    </div>
+
+                    <div className="bg-slate-950/50 p-4 rounded border border-white/5 space-y-3 relative overflow-hidden">
+                        {/* Scanning Line Animation */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent h-full w-full animate-[scan_2s_ease-in-out_infinite]" />
+
+                        <div className="flex justify-between items-center text-xs font-mono uppercase text-muted-foreground relative z-10">
+                            <span>Integrity Analysis</span>
+                            <span className={clsx(
+                                item.condition === 'OPERATIONAL' ? "text-green-500" :
+                                    item.condition === 'DAMAGED' ? "text-yellow-500" : "text-red-500"
+                            )}>{item.condition === 'OPERATIONAL' ? '100%' : item.condition === 'DAMAGED' ? '64%' : '12%'}</span>
+                        </div>
+
+                        <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden relative z-10">
+                            {/* Bar Background Stripes */}
+                            <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:4px_100%]" />
+
+                            <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: item.condition === 'OPERATIONAL' ? '100%' : item.condition === 'DAMAGED' ? '64%' : '12%' }}
+                                transition={{ duration: 1, ease: "easeOut" }}
+                                className={clsx(
+                                    "h-full relative",
+                                    item.condition === 'OPERATIONAL' ? "bg-green-500" :
+                                        item.condition === 'DAMAGED' ? "bg-yellow-500" : "bg-red-500"
+                                )}
+                            >
+                                <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:10px_10px] animate-[progress_1s_linear_infinite]" />
+                            </motion.div>
+                        </div>
+                    </div>
+
+                    <div className="pt-2 relative z-10">
+                        {item.condition !== 'OPERATIONAL' ? (
+                            <button
+                                onClick={() => onRepair(item.id)}
+                                className="w-full py-3 bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 uppercase font-bold text-xs tracking-widest flex items-center justify-center gap-2 transition-all hover:shadow-[0_0_15px_rgba(234,179,8,0.2)] group/btn relative overflow-hidden"
+                            >
+                                <div className="absolute inset-0 bg-yellow-500/10 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
+                                <Wrench className="w-4 h-4 relative z-10" />
+                                <span className="relative z-10">Submit Repair Order</span>
+                            </button>
+                        ) : (
+                            <div className="w-full py-3 bg-green-500/5 border border-green-500/20 text-green-500/50 uppercase font-bold text-xs tracking-widest flex items-center justify-center gap-2 cursor-not-allowed">
+                                <CheckCircle className="w-4 h-4" />
+                                Systems Nominal
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
-        </motion.div>
+            </motion.div>
+        </div>
     </div>
 );
 

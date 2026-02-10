@@ -287,19 +287,19 @@ export default function MissionsPage() {
             <AnimatePresence>
                 {selectedMission && (
                     <div className="fixed inset-0 z-[100] overflow-y-auto custom-scrollbar">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black/95 backdrop-blur-2xl"
-                            onClick={() => setSelectedMission(null)}
-                        />
                         <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/95 backdrop-blur-2xl"
+                                onClick={() => setSelectedMission(null)}
+                            />
                             <motion.div
                                 initial={{ scale: 0.95, opacity: 0, y: 30 }}
                                 animate={{ scale: 1, opacity: 1, y: 0 }}
                                 exit={{ scale: 0.95, opacity: 0, y: 30 }}
-                                className="relative w-full max-w-3xl bg-slate-950 border-2 border-cyan-500/30 rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.2)]"
+                                className="relative z-10 w-full max-w-3xl bg-slate-950 border-2 border-cyan-500/30 rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.2)]"
                             >
                                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
 
@@ -380,7 +380,7 @@ export default function MissionsPage() {
                                                             setSelectedMission(null);
                                                         });
                                                     }}
-                                                    className="px-6 py-4 border-2 border-red-500/20 text-red-500 hover:bg-red-500/10 transition-all rounded-2xl"
+                                                    className="px-6 py-4 border-2 border-red-500/20 text-red-500 hover:bg-red-500/10 border-red-500 hover:text-red-500 transition-all rounded-2xl"
                                                 >
                                                     <Trash2 size={20} />
                                                 </button>
@@ -409,13 +409,19 @@ export default function MissionsPage() {
             <AnimatePresence>
                 {isModalOpen && (
                     <div className="fixed inset-0 z-[110] overflow-y-auto custom-scrollbar">
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/95 backdrop-blur-md" onClick={closeModal} />
                         <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 bg-black/95 backdrop-blur-md"
+                                onClick={closeModal}
+                            />
                             <motion.div
                                 initial={{ scale: 0.9, opacity: 0, y: 30 }}
                                 animate={{ scale: 1, opacity: 1, y: 0 }}
                                 exit={{ scale: 0.9, opacity: 0, y: 30 }}
-                                className="relative w-full max-w-xl bg-slate-900 border-2 border-cyan-500/30 p-12 space-y-10 rounded-3xl shadow-[0_0_80px_rgba(6,182,212,0.3)]"
+                                className="relative z-10 w-full max-w-xl bg-slate-900 border-2 border-cyan-500/30 p-12 space-y-10 rounded-3xl shadow-[0_0_80px_rgba(6,182,212,0.3)]"
                             >
                                 <div className="space-y-2">
                                     <h2 className="text-3xl font-black text-white tracking-widest uppercase italic">Tactical Briefing</h2>
