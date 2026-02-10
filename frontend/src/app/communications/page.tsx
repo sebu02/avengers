@@ -1,15 +1,17 @@
 "use client";
+export const dynamic = "force-dynamic";
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-    Phone, Radio, Satellite, Wifi, Signal, Zap, Shield, Activity,
-    Target, Crosshair, Users, Globe, Lock, Unlock, Eye, Radar,
-    MessageSquare, Video, Mic, MicOff, PhoneOff, Volume2, X,
-    AlertTriangle, CheckCircle, Loader, Sparkles, Crown, Flame
+    Phone, Radio, Satellite, Signal, Zap, Shield,
+    Users, Globe, Eye, Radar,
+    MessageSquare, Video, Mic, MicOff, PhoneOff, Volume2,
+    CheckCircle, Loader, Sparkles, Crown
 } from "lucide-react";
 import clsx from "clsx";
 
-// Contact Groups
+// Contact Groups (UNCHANGED)
 const CONTACT_GROUPS = [
     {
         id: "avengers",
@@ -72,6 +74,26 @@ const CONTACT_GROUPS = [
 ];
 
 export default function CommunicationsPage() {
+
+    // ✅ build-safe mount + viewport
+    const [mounted, setMounted] = useState(false);
+    const [viewport, setViewport] = useState({ w: 0, h: 0 });
+    const [particles, setParticles] = useState<{ x: number, y: number }[]>([]);
+
+    useEffect(() => {
+        setMounted(true);
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        setViewport({ w, h });
+
+        setParticles(
+            Array.from({ length: 20 }).map(() => ({
+                x: Math.random() * w,
+                y: Math.random() * h
+            }))
+        );
+    }, []);
+
     const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
     const [activeCall, setActiveCall] = useState<any>(null);
     const [callStatus, setCallStatus] = useState<'idle' | 'connecting' | 'connected' | 'ended'>('idle');
@@ -81,7 +103,7 @@ export default function CommunicationsPage() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setScanningSignal(prev => !prev);
+            setScanningSignal(p => !p);
         }, 2000);
         return () => clearInterval(interval);
     }, []);
@@ -89,10 +111,7 @@ export default function CommunicationsPage() {
     const initiateCall = (member: any) => {
         setActiveCall(member);
         setCallStatus('connecting');
-
-        setTimeout(() => {
-            setCallStatus('connected');
-        }, 3000);
+        setTimeout(() => setCallStatus('connected'), 3000);
     };
 
     const endCall = () => {
@@ -115,21 +134,22 @@ export default function CommunicationsPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-6 font-mono relative overflow-hidden">
-            {/* Animated Background Grid */}
+
+            {/* background grid — unchanged */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse" />
 
-            {/* Floating Particles */}
-            {[...Array(20)].map((_, i) => (
+            {/* ✅ SAFE particles */}
+            {mounted && particles.map((p, i) => (
                 <motion.div
                     key={i}
                     className="absolute w-1 h-1 bg-blue-400 rounded-full"
-                    initial={{ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight }}
+                    initial={{ x: p.x, y: p.y }}
                     animate={{
-                        y: [null, Math.random() * window.innerHeight],
-                        x: [null, Math.random() * window.innerWidth],
+                        x: Math.random() * viewport.w,
+                        y: Math.random() * viewport.h,
                         opacity: [0, 1, 0]
                     }}
-                    transition={{ duration: 5 + Math.random() * 5, repeat: 9999, repeatType: "loop" }}
+                    transition={{ duration: 5 + Math.random() * 5, repeat: 9999 }}
                 />
             ))}
 
