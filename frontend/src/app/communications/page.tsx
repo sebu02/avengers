@@ -159,16 +159,16 @@ export default function CommunicationsPage() {
                 animate={{ y: 0, opacity: 1 }}
                 className="relative z-10 mb-8"
             >
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
-                        <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 mb-2">
+                        <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 mb-2 uppercase italic">
                             COMMUNICATIONS HUB
                         </h1>
-                        <p className="text-xs text-cyan-600 tracking-[0.3em]">SECURE QUANTUM ENCRYPTED CHANNEL</p>
+                        <p className="text-[10px] text-cyan-600 tracking-[0.3em]">SECURE QUANTUM ENCRYPTED CHANNEL</p>
                     </div>
 
                     {/* Signal Strength Indicator */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 self-start md:self-auto bg-black/40 p-3 rounded-xl border border-blue-500/20">
                         <div className="flex items-center gap-2">
                             <Satellite className={clsx("w-5 h-5", scanningSignal ? "text-green-500" : "text-cyan-500")} />
                             <div className="flex gap-1">
@@ -187,9 +187,9 @@ export default function CommunicationsPage() {
                 </div>
             </motion.div>
 
-            <div className="grid grid-cols-12 gap-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
                 {/* Left Sidebar - Contact Groups */}
-                <div className="col-span-3 space-y-4">
+                <div className="lg:col-span-3 space-y-4">
                     <div className="bg-black/40 border border-cyan-500/30 rounded-xl p-4 backdrop-blur-md">
                         <h2 className="text-xs font-bold text-cyan-400 tracking-[0.2em] mb-4 flex items-center gap-2">
                             <Users size={14} />
@@ -260,7 +260,7 @@ export default function CommunicationsPage() {
                 </div>
 
                 {/* Center - Members List */}
-                <div className="col-span-6">
+                <div className="lg:col-span-6">
                     <AnimatePresence mode="wait">
                         {selectedGroup ? (
                             <motion.div
@@ -279,7 +279,7 @@ export default function CommunicationsPage() {
                                     {CONTACT_GROUPS.find(g => g.id === selectedGroup)?.name}
                                 </h2>
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {CONTACT_GROUPS.find(g => g.id === selectedGroup)?.members.map((member, index) => (
                                         <motion.div
                                             key={member.id}
@@ -379,7 +379,7 @@ export default function CommunicationsPage() {
                 </div>
 
                 {/* Right Sidebar - Active Communications */}
-                <div className="col-span-3 space-y-4">
+                <div className="lg:col-span-3 space-y-4 order-last lg:order-none">
                     <div className="bg-black/40 border border-purple-500/30 rounded-xl p-4 backdrop-blur-md">
                         <h2 className="text-xs font-bold text-purple-400 tracking-[0.2em] mb-4 flex items-center gap-2">
                             <Radio size={14} className="animate-pulse" />

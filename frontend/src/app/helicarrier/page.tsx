@@ -218,35 +218,35 @@ export default function HelicarrierPage() {
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 -z-10" />
 
             {/* HEADER / TOP BAR */}
-            <header className="flex justify-between items-center p-4 border-b border-cyan-500/30 bg-black/40 backdrop-blur-md z-20">
+            <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center p-4 gap-4 border-b border-cyan-500/30 bg-black/40 backdrop-blur-md z-20">
                 <div className="flex items-center gap-4">
                     <div className="relative">
-                        <div className="w-12 h-12 border-2 border-cyan-500 rounded-full flex items-center justify-center animate-[spin_10s_linear_infinite]">
-                            <Shield className="w-6 h-6 text-cyan-400" />
+                        <div className="w-10 h-10 md:w-12 md:h-12 border-2 border-cyan-500 rounded-full flex items-center justify-center animate-[spin_10s_linear_infinite]">
+                            <Shield className="w-5 h-5 md:w-6 md:h-6 text-cyan-400" />
                         </div>
                         {activeAlerts.length > 0 && <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />}
                     </div>
                     <div>
-                        <h1 className="text-xl font-black tracking-[0.3em] text-cyan-400 uppercase drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]">
+                        <h1 className="text-lg md:text-xl font-black tracking-[0.3em] text-cyan-400 uppercase drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]">
                             HELICARRIER 64
                         </h1>
-                        <p className="text-[10px] text-cyan-700 tracking-widest uppercase">BRIDGE ACCESS // LEVEL 10</p>
+                        <p className="text-[8px] md:text-[10px] text-cyan-700 tracking-widest uppercase">BRIDGE ACCESS // LEVEL 10</p>
                     </div>
                 </div>
 
                 {/* Top Status Indicators */}
-                <div className="flex gap-6">
-                    <div className="text-right">
-                        <div className="text-[10px] text-cyan-700 uppercase">Reactor Core</div>
-                        <div className="text-lg font-bold text-cyan-400">{fuelLevels[0]}%</div>
+                <div className="flex flex-wrap gap-4 md:gap-6">
+                    <div className="text-left md:text-right">
+                        <div className="text-[8px] md:text-[10px] text-cyan-700 uppercase">Reactor Core</div>
+                        <div className="text-sm md:text-lg font-bold text-cyan-400">{fuelLevels[0]}%</div>
                     </div>
-                    <div className="text-right">
-                        <div className="text-[10px] text-cyan-700 uppercase">Altitude</div>
-                        <div className="text-lg font-bold text-cyan-400">35,000 FT</div>
+                    <div className="text-left md:text-right">
+                        <div className="text-[8px] md:text-[10px] text-cyan-700 uppercase">Altitude</div>
+                        <div className="text-sm md:text-lg font-bold text-cyan-400">35,000 FT</div>
                     </div>
-                    <div className="text-right">
-                        <div className="text-[10px] text-cyan-700 uppercase">Speed</div>
-                        <div className="text-lg font-bold text-cyan-400">MACH 0.8</div>
+                    <div className="text-left md:text-right">
+                        <div className="text-[8px] md:text-[10px] text-cyan-700 uppercase">Speed</div>
+                        <div className="text-sm md:text-lg font-bold text-cyan-400">MACH 0.8</div>
                     </div>
                 </div>
 
@@ -262,10 +262,10 @@ export default function HelicarrierPage() {
 
 
             {/* MAIN CONTENT GRID */}
-            <div className="flex-1 grid grid-cols-12 gap-4 p-4 min-h-0 relative z-10">
+            <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-4 min-h-0 relative z-10 overflow-y-auto lg:overflow-hidden">
 
-                {/* LEFT: TACTICAL & COMMS */}
-                <div className="col-span-3 flex flex-col gap-4 min-h-0">
+                {/* LEFT: TACTICAL & COMMS (Desktop: Col 3, Mobile: Order 3) */}
+                <div className="lg:col-span-3 flex flex-col gap-4 min-h-0 h-[800px] lg:h-full order-3 lg:order-1">
                     {/* Tactical Map */}
                     <div className="flex-1 bg-black/40 border border-cyan-500/30 rounded-lg overflow-hidden relative group flex flex-col">
                         <div className="bg-cyan-950/30 p-2 border-b border-cyan-500/30 flex justify-between items-center">
@@ -326,10 +326,10 @@ export default function HelicarrierPage() {
                     </div>
                 </div>
 
-                {/* CENTER: COMMAND DECK */}
-                <div className="col-span-6 flex flex-col relative group">
+                {/* CENTER: COMMAND DECK (Desktop: Col 6, Mobile: Order 1) */}
+                <div className="lg:col-span-6 flex flex-col gap-4 relative group h-auto lg:h-full order-1 lg:order-2">
                     {/* Main Viewport */}
-                    <div className="flex-1 bg-black/80 border-2 border-cyan-500 rounded-xl relative overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.15)] ring-1 ring-cyan-400/20 perspective-[2000px]">
+                    <div className="min-h-[350px] flex-1 bg-black/80 border-2 border-cyan-500 rounded-xl relative overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.15)] ring-1 ring-cyan-400/20 perspective-[2000px]">
 
                         {/* 3D Blueprint Container */}
                         <div className="absolute inset-0 flex items-center justify-center preserve-3d">
@@ -453,8 +453,35 @@ export default function HelicarrierPage() {
                     </div>
                 </div>
 
-                {/* RIGHT: SYSTEMS & CONTROL */}
-                <div className="col-span-3 flex flex-col gap-4 min-h-0">
+                {/* MOBILE ONLY: REMOTE NAV (Order 2) */}
+                <div className="lg:hidden order-2 bg-black/40 border border-cyan-500/30 rounded-lg p-4">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-xs font-bold tracking-widest text-cyan-400 flex items-center gap-2"><Navigation size={14} /> REMOTE NAV</h3>
+                        <button
+                            onClick={() => setManualOverride(!manualOverride)}
+                            className={clsx("text-[8px] px-2 py-1 rounded border font-bold transition-all", manualOverride ? "bg-yellow-500 text-black border-yellow-500" : "bg-transparent text-cyan-700 border-cyan-900")}
+                        >
+                            {manualOverride ? "MANUAL" : "AUTO"}
+                        </button>
+                    </div>
+
+                    <div className={clsx("grid grid-cols-3 gap-2 aspect-square max-w-[200px] mx-auto transition-opacity duration-300", manualOverride ? "opacity-100" : "opacity-30 pointer-events-none")}>
+                        <div />
+                        <ControlBtn icon={ArrowUp} onClick={() => handleMove(0, -20, 0)} />
+                        <div />
+                        <ControlBtn icon={ArrowLeft} onClick={() => handleMove(-20, 0, -5)} />
+                        <div className="bg-cyan-900/20 rounded border border-cyan-500/30 flex items-center justify-center">
+                            <div className={clsx("w-2 h-2 rounded-full", isStealth ? "bg-gray-500" : "bg-cyan-500 animate-ping")} />
+                        </div>
+                        <ControlBtn icon={ArrowRight} onClick={() => handleMove(20, 0, 5)} />
+                        <div />
+                        <ControlBtn icon={ArrowDown} onClick={() => handleMove(0, 20, 0)} />
+                        <div />
+                    </div>
+                </div>
+
+                {/* RIGHT: SYSTEMS & CONTROL (Desktop: Col 3, Mobile: Order 4) */}
+                <div className="lg:col-span-3 flex flex-col gap-4 min-h-0 order-4 lg:order-3">
 
                     {/* Flight Systems Panel */}
                     <div className="bg-black/40 border border-cyan-500/30 rounded-lg p-4">
@@ -519,8 +546,8 @@ export default function HelicarrierPage() {
                         </div>
                     </div>
 
-                    {/* Remote Control Panel */}
-                    <div className="flex-1 bg-black/40 border border-cyan-500/30 rounded-lg p-4">
+                    {/* Remote Control Panel (Desktop Only) */}
+                    <div className="hidden lg:block flex-1 bg-black/40 border border-cyan-500/30 rounded-lg p-4">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-xs font-bold tracking-widest text-cyan-400 flex items-center gap-2"><Navigation size={14} /> REMOTE NAV</h3>
                             <button
@@ -678,7 +705,7 @@ export default function HelicarrierPage() {
                 )}
             </AnimatePresence>
 
-            {/* CIA Access Modal - RESTORED & ENHANCED */}
+            {/* CIA Access Modal */}
             <AnimatePresence>
                 {ciaAccess && (
                     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
@@ -693,7 +720,6 @@ export default function HelicarrierPage() {
                             exit={{ scale: 0.9, opacity: 0 }}
                             className="relative z-10 w-full max-w-2xl bg-[#0a0a0a] border border-cyan-500 rounded-lg overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.3),inset_0_0_20px_rgba(0,0,0,1)] font-mono flex flex-col max-h-[80vh]"
                         >
-                            {/* Modal Header */}
                             <div className="bg-cyan-950/30 p-4 border-b border-cyan-500/30 flex justify-between items-center shrink-0">
                                 <div className="flex items-center gap-2 text-cyan-400 text-sm tracking-[0.2em] uppercase font-bold">
                                     <Lock className="w-4 h-4" /> CIA Restricted Mainframe
@@ -701,45 +727,27 @@ export default function HelicarrierPage() {
                                 <button onClick={() => setCiaAccess(false)}><X className="w-5 h-5 text-cyan-600 hover:text-white hover:rotate-90 transition-all" /></button>
                             </div>
 
-                            {/* Modal Content */}
                             <div className="p-8 overflow-y-auto min-h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(6,182,212,0.05),transparent)]">
                                 {ciaLoginStatus === 'GRANTED' ? (
                                     activeFile ? (
-                                        // FILE VIEW
                                         <div className="animate-in fade-in slide-in-from-right-8 duration-300">
                                             <button onClick={() => setActiveFile(null)} className="text-xs text-cyan-500 hover:text-white mb-6 flex items-center gap-2 px-3 py-1 border border-cyan-500/30 rounded w-fit hover:bg-cyan-500/20 transition-colors">
                                                 <ArrowLeft size={12} /> BACK TO INDEX
                                             </button>
                                             <div className="border border-red-900/50 bg-red-950/10 p-8 rounded relative overflow-hidden">
                                                 <div className="absolute top-4 right-4 text-red-500/20 border-2 border-red-500/20 rounded p-2 text-xs -rotate-12 uppercase font-black border-dashed">Top Secret</div>
-                                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/notebook.png')] opacity-5 mix-blend-overlay" />
                                                 <h3 className="text-2xl text-red-500 font-black mb-6 uppercase tracking-wider flex items-center gap-3">
                                                     <FileText /> SUBJECT: {activeFile}
                                                 </h3>
                                                 <div className="space-y-6 text-gray-300 text-sm font-serif leading-relaxed relative z-10">
                                                     <p>INTELLIGENCE REPORT #892-A // CLEARANCE LEVEL 8</p>
                                                     <div className="w-full h-px bg-red-900/30 mb-4" />
-                                                    <p>
-                                                        Analysis of <span className="bg-black px-1 text-transparent select-none cursor-help" title="REDACTED">REDACTED</span> confirms the presence of enhanced individuals in the sector.
-                                                        Primary objective remains the containment of the Tesseract energy signature.
-                                                    </p>
-                                                    <p>
-                                                        Director Fury has authorized <span className="text-red-400 font-bold">INITIATIVE ZERO</span> in event of containment failure.
-                                                        All agents are to report to designated safe zones immediately.
-                                                    </p>
-                                                    <p className="italic text-gray-500 mt-8">
-                                                        "The world is filling up with people who can't be matched, they can't be controlled..."
-                                                    </p>
-                                                    <div className="border-t border-red-900/30 pt-4 mt-8 text-[10px] text-red-700 uppercase flex justify-between">
-                                                        <span>Destruction mandatory after reading</span>
-                                                        <span>Auth: N. Fury</span>
-                                                    </div>
+                                                    <p>Analysis confirms the presence of enhanced individuals. Primary objective remains containment.</p>
                                                 </div>
                                             </div>
                                         </div>
                                     ) : (
-                                        // FILE LIST
-                                        <div className="grid grid-cols-2 gap-4 animate-in fade-in duration-500">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-500">
                                             {CIA_FILES.map(file => (
                                                 <div
                                                     key={file.id}
@@ -758,7 +766,6 @@ export default function HelicarrierPage() {
                                         </div>
                                     )
                                 ) : (
-                                    // LOGIN FORM
                                     <form onSubmit={handleCiaLogin} className="space-y-6 max-w-xs mx-auto text-center mt-10">
                                         <div className="w-24 h-24 mx-auto bg-cyan-900/10 rounded-full flex items-center justify-center mb-8 animate-pulse border border-cyan-500/30 relative">
                                             <div className="absolute inset-0 rounded-full border border-cyan-500/20 animate-ping" />
@@ -812,20 +819,10 @@ export default function HelicarrierPage() {
                             <div className="p-6 space-y-6">
                                 <div className="space-y-2">
                                     <label className="text-xs text-cyan-600 uppercase font-bold">Cockpit Lighting</label>
-                                    <div className="flex gap-2">
+                                    <div className="flex flex-wrap gap-2">
                                         {['AUTO', 'DIM', 'BRIGHT', 'RED ALERT'].map(mode => (
-                                            <button key={mode} className="flex-1 bg-black/40 border border-cyan-800 text-[10px] text-cyan-400 py-2 rounded hover:bg-cyan-900/40">{mode}</button>
+                                            <button key={mode} className="flex-1 min-w-[80px] bg-black/40 border border-cyan-800 text-[10px] text-cyan-400 py-2 rounded hover:bg-cyan-900/40">{mode}</button>
                                         ))}
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs text-cyan-600 uppercase font-bold">Audio Feedback</label>
-                                    <input type="range" className="w-full h-1 bg-cyan-900/50 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-cyan-500 [&::-webkit-slider-thumb]:rounded-full" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs text-cyan-600 uppercase font-bold">Autopilot Aggression</label>
-                                    <div className="w-full bg-black/40 p-2 rounded border border-cyan-900/50 text-cyan-500 text-xs font-mono">
-                                        CURRENT: LEVEL 5 (STANDARD)
                                     </div>
                                 </div>
                                 <div className="pt-4 border-t border-cyan-900/30 flex justify-end gap-2">
@@ -838,7 +835,7 @@ export default function HelicarrierPage() {
                 )}
             </AnimatePresence>
 
-            {/* Missile Launch Animation - EPIC */}
+            {/* Missile Launch Animation */}
             <AnimatePresence>
                 {missilePhase !== 'idle' && (
                     <motion.div
@@ -847,193 +844,35 @@ export default function HelicarrierPage() {
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-sm flex items-center justify-center font-mono overflow-hidden"
                     >
-                        {/* Tech Grid Background */}
                         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,0,0,0.05)_1px,transparent_1px)] bg-[size:50px_50px]" />
 
-                        {/* TARGETING PHASE */}
                         {missilePhase === 'targeting' && (
-                            <motion.div
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                className="relative z-10 text-center"
-                            >
-                                <div className="relative w-96 h-96 mx-auto mb-8">
-                                    {/* Crosshair rings */}
-                                    {[1, 2, 3].map(i => (
-                                        <motion.div
-                                            key={i}
-                                            className="absolute inset-0 border-2 border-red-500 rounded-full"
-                                            animate={{
-                                                scale: [1, 1.5, 1],
-                                                opacity: [0.8, 0, 0.8]
-                                            }}
-                                            transition={{
-                                                duration: 1.5,
-                                                repeat: 9999,
-                                                repeatType: "loop",
-                                                delay: i * 0.3
-                                            }}
-                                        />
-                                    ))}
-                                    <Target className="w-full h-full text-red-500 animate-pulse" />
-                                    <motion.div
-                                        className="absolute inset-0 border-4 border-red-500"
-                                        animate={{ rotate: 360 }}
-                                        transition={{ duration: 2, repeat: 9999, repeatType: "loop", ease: "linear" }}
-                                    >
-                                        <div className="absolute top-0 left-1/2 w-1 h-8 bg-red-500 -translate-x-1/2" />
-                                        <div className="absolute bottom-0 left-1/2 w-1 h-8 bg-red-500 -translate-x-1/2" />
-                                        <div className="absolute left-0 top-1/2 h-1 w-8 bg-red-500 -translate-y-1/2" />
-                                        <div className="absolute right-0 top-1/2 h-1 w-8 bg-red-500 -translate-y-1/2" />
-                                    </motion.div>
-                                </div>
-                                <motion.div
-                                    animate={{ opacity: [0.5, 1, 0.5] }}
-                                    transition={{ duration: 0.5, repeat: 9999, repeatType: "loop" }}
-                                    className="text-red-500 text-2xl font-black tracking-[0.5em]"
-                                >
-                                    ACQUIRING TARGET
-                                </motion.div>
-                                <div className="mt-4 text-red-400 text-sm">LOCK STATUS: 47% ... 68% ... 89%</div>
-                            </motion.div>
-                        )}
-
-                        {/* COUNTDOWN PHASE */}
-                        {missilePhase === 'countdown' && (
-                            <motion.div
-                                initial={{ scale: 1.5, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                className="relative z-10 text-center"
-                            >
-                                <motion.div className="text-red-500 text-sm tracking-[0.3em] mb-4">TARGET LOCKED</motion.div>
-                                <div className="w-64 h-64 mx-auto relative mb-8 flex items-center justify-center">
-                                    <motion.div
-                                        className="absolute inset-0 border-8 border-red-600 rounded-full"
-                                        animate={{
-                                            scale: [1, 1.1, 1],
-                                            borderColor: ['#dc2626', '#ef4444', '#dc2626']
-                                        }}
-                                        transition={{ duration: 1, repeat: 9999, repeatType: "loop" }}
-                                    />
-                                    <motion.div
-                                        className="text-9xl font-black text-red-500"
-                                        animate={{ scale: [1, 1.2, 1] }}
-                                        transition={{ duration: 1, repeat: 9999, repeatType: "loop" }}
-                                    >
-                                        3
-                                    </motion.div>
-                                </div>
-                                <motion.div
-                                    animate={{ scale: [1, 1.05, 1] }}
-                                    transition={{ duration: 0.5, repeat: 9999 }}
-                                    className="text-red-500 text-xl font-black tracking-[0.5em]"
-                                >
-                                    LAUNCH SEQUENCE INITIATED
-                                </motion.div>
-                            </motion.div>
-                        )}
-
-                        {/* FIRING PHASE */}
-                        {missilePhase === 'firing' && (
-                            <div className="relative w-full h-full">
-                                {/* Missile trail */}
-                                <motion.div
-                                    className="absolute left-1/2 w-4 h-32 bg-gradient-to-b from-orange-500 via-red-500 to-yellow-400 rounded-full blur-sm"
-                                    initial={{ bottom: '10%', opacity: 0 }}
-                                    animate={{
-                                        bottom: '100%',
-                                        opacity: [0, 1, 1, 0]
-                                    }}
-                                    transition={{ duration: 1.5, ease: "easeIn" }}
-                                />
-                                {/* Missile body */}
-                                <motion.div
-                                    className="absolute left-1/2 -translate-x-1/2"
-                                    initial={{ bottom: '10%' }}
-                                    animate={{ bottom: '100%' }}
-                                    transition={{ duration: 1.5, ease: "easeIn" }}
-                                >
-                                    <Rocket className="w-12 h-12 text-red-600 rotate-180" />
-                                </motion.div>
-                                {/* Launch flash */}
-                                <motion.div
-                                    className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-64 h-64 bg-orange-500 rounded-full blur-3xl"
-                                    animate={{
-                                        scale: [0, 2, 0],
-                                        opacity: [0, 0.8, 0]
-                                    }}
-                                    transition={{ duration: 1 }}
-                                />
-                                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 text-orange-500 text-2xl font-black tracking-[0.5em]">
-                                    FIRING
-                                </div>
+                            <div className="text-center z-10">
+                                <Target className="w-32 h-32 text-red-500 mx-auto mb-4 animate-pulse" />
+                                <div className="text-red-500 text-2xl font-black tracking-widest">ACQUIRING TARGET</div>
                             </div>
                         )}
 
-                        {/* IMPACT PHASE */}
-                        {missilePhase === 'impact' && (
-                            <motion.div
-                                className="relative w-full h-full flex items-center justify-center"
-                                animate={{
-                                    x: [0, -10, 10, -5, 5, 0],
-                                    y: [0, 5, -5, 3, -3, 0]
-                                }}
-                                transition={{ duration: 0.5, repeat: 3 }}
-                            >
-                                {/* Explosion rings */}
-                                {[0, 0.2, 0.4, 0.6].map((delay, i) => (
-                                    <motion.div
-                                        key={i}
-                                        className="absolute w-32 h-32 border-8 border-orange-500 rounded-full"
-                                        initial={{ scale: 0, opacity: 1 }}
-                                        animate={{
-                                            scale: [0, 8],
-                                            opacity: [1, 0],
-                                            borderColor: ['#f97316', '#ef4444', '#7c2d12']
-                                        }}
-                                        transition={{ duration: 2, delay }}
-                                    />
-                                ))}
-                                {/* Flash */}
-                                <motion.div
-                                    className="absolute inset-0 bg-white"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: [0, 1, 0, 0.5, 0] }}
-                                    transition={{ duration: 1, times: [0, 0.1, 0.2, 0.5, 1] }}
-                                />
-                                {/* Fire burst */}
-                                <motion.div
-                                    className="absolute w-96 h-96 bg-gradient-radial from-orange-500 via-red-600 to-transparent rounded-full blur-2xl"
-                                    animate={{
-                                        scale: [0, 3, 2],
-                                        opacity: [1, 0.8, 0]
-                                    }}
-                                    transition={{ duration: 2 }}
-                                />
-                                <Flame className="w-64 h-64 text-orange-600 absolute animate-pulse" />
-                                <motion.div
-                                    initial={{ scale: 0, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ delay: 0.5 }}
-                                    className="text-red-600 text-4xl font-black tracking-[0.5em] z-10 drop-shadow-[0_0_20px_rgba(220,38,38,1)]"
-                                >
-                                    TARGET DESTROYED
-                                </motion.div>
-                            </motion.div>
+                        {missilePhase === 'countdown' && (
+                            <div className="text-center z-10">
+                                <div className="text-red-500 text-9xl font-black">3</div>
+                                <div className="text-red-500 text-xl font-black mt-4">LAUNCH SEQUENCE</div>
+                            </div>
                         )}
 
-                        {/* HUD Overlay */}
-                        <div className="absolute top-8 left-8 text-red-500 text-xs font-mono space-y-1 opacity-70">
-                            <div>MISSILE SYS: ACTIVE</div>
-                            <div>WARHEAD: ARMED</div>
-                            <div>TRAJECTORY: LOCKED</div>
-                            <div>YIELD: 500KT</div>
-                        </div>
-                        <div className="absolute top-8 right-8 text-red-500 text-xs font-mono text-right space-y-1 opacity-70">
-                            <div>RANGE: 2,400 NM</div>
-                            <div>SPEED: MACH 3.2</div>
-                            <div>ALT: 45,000 FT</div>
-                        </div>
+                        {missilePhase === 'firing' && (
+                            <div className="text-center z-10">
+                                <Rocket className="w-24 h-24 text-orange-500 mx-auto animate-bounce" />
+                                <div className="text-orange-500 text-2xl font-black">FIRING</div>
+                            </div>
+                        )}
+
+                        {missilePhase === 'impact' && (
+                            <div className="text-center z-10">
+                                <Flame className="w-32 h-32 text-red-600 mx-auto animate-pulse" />
+                                <div className="text-red-600 text-4xl font-black">TARGET DESTROYED</div>
+                            </div>
+                        )}
                     </motion.div>
                 )}
             </AnimatePresence>

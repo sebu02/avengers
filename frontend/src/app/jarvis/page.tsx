@@ -183,7 +183,7 @@ export default function JarvisPage() {
                 animate={{ y: 0, opacity: 1 }}
                 className="relative z-10 mb-6"
             >
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div className="flex items-center gap-4">
                         <motion.div
                             className="relative"
@@ -212,11 +212,11 @@ export default function JarvisPage() {
                     </div>
 
                     {/* AI Selector */}
-                    <div className="flex gap-2 bg-black/60 p-2 rounded-xl border border-cyan-500/30">
+                    <div className="flex gap-2 bg-black/60 p-1.5 rounded-xl border border-cyan-500/30 self-start md:self-auto">
                         <button
                             onClick={() => setSelectedAI('jarvis')}
                             className={clsx(
-                                "px-6 py-2 rounded-lg font-bold text-sm transition-all",
+                                "flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg font-bold text-[10px] md:text-sm transition-all",
                                 selectedAI === 'jarvis'
                                     ? "bg-cyan-600 text-white shadow-[0_0_20px_rgba(6,182,212,0.5)]"
                                     : "bg-transparent text-gray-400 hover:text-cyan-400"
@@ -227,7 +227,7 @@ export default function JarvisPage() {
                         <button
                             onClick={() => setSelectedAI('friday')}
                             className={clsx(
-                                "px-6 py-2 rounded-lg font-bold text-sm transition-all",
+                                "flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg font-bold text-[10px] md:text-sm transition-all",
                                 selectedAI === 'friday'
                                     ? "bg-purple-600 text-white shadow-[0_0_20px_rgba(147,51,234,0.5)]"
                                     : "bg-transparent text-gray-400 hover:text-purple-400"
@@ -239,9 +239,9 @@ export default function JarvisPage() {
                 </div>
             </motion.div>
 
-            <div className="grid grid-cols-12 gap-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
                 {/* Left Column */}
-                <div className="col-span-3 space-y-6">
+                <div className="lg:col-span-3 space-y-6">
                     {/* Arc Reactor Status */}
                     <ArcReactorCard
                         power={arcReactorPower}
@@ -261,7 +261,7 @@ export default function JarvisPage() {
                 </div>
 
                 {/* Center Column */}
-                <div className="col-span-6 space-y-6">
+                <div className="lg:col-span-6 space-y-6">
                     {/* AI Chat */}
                     <AIChatCard
                         selectedAI={selectedAI}
@@ -285,7 +285,7 @@ export default function JarvisPage() {
                 </div>
 
                 {/* Right Column */}
-                <div className="col-span-3 space-y-6">
+                <div className="lg:col-span-3 space-y-6 order-last lg:order-none">
                     {/* Financial Dashboard */}
                     <FinancialCard
                         balance={bankBalance}
