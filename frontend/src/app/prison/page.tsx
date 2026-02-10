@@ -199,19 +199,21 @@ export default function VillainPrisonPage() {
                 animate={{ y: 0, opacity: 1 }}
                 className="relative z-10 mb-8"
             >
-                <div className="flex items-center justify-between">
-                    <div>
-                        <div className="flex items-center gap-4 mb-2">
+                <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-6">
+                    <div className="text-center lg:text-left">
+                        <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-2">
                             <ShieldAlert className="w-12 h-12 text-red-500 animate-pulse" />
-                            <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-red-500">
-                                THE RAFT
-                            </h1>
+                            <div>
+                                <h1 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-red-500 uppercase">
+                                    THE RAFT
+                                </h1>
+                                <p className="text-[10px] text-red-600 tracking-[0.3em] uppercase">MAXIMUM SECURITY SUPERHUMAN PRISON</p>
+                            </div>
                         </div>
-                        <p className="text-xs text-red-600 tracking-[0.3em] ml-16">MAXIMUM SECURITY SUPERHUMAN PRISON</p>
                     </div>
 
                     {/* Security Status */}
-                    <div className="bg-black/60 border-2 border-red-500 rounded-xl p-4 backdrop-blur-md">
+                    <div className="w-full max-w-sm bg-black/60 border-2 border-red-500 rounded-xl p-4 backdrop-blur-md shrink-0">
                         <div className="flex items-center gap-3 mb-2">
                             <Lock className="w-5 h-5 text-green-500" />
                             <span className="text-sm font-bold text-green-500">ALL CELLS SECURE</span>

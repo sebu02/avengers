@@ -54,18 +54,18 @@ export const SecurityModal = ({
                             <motion.div
                                 className="absolute inset-0 border-4 border-red-500 rounded-full"
                                 animate={{ rotate: 360 }}
-                                transition={{ duration: 2, repeat: Infinity, repeatType: "loop", ease: "linear" }}
+                                transition={{ duration: 2, repeat: 9999, repeatType: "loop", ease: "linear" }}
                             />
                             <motion.div
                                 className="absolute inset-4 border-2 border-red-400 rounded-full"
                                 animate={{ rotate: -360 }}
-                                transition={{ duration: 3, repeat: Infinity, repeatType: "loop", ease: "linear" }}
+                                transition={{ duration: 3, repeat: 9999, repeatType: "loop", ease: "linear" }}
                             />
                             <Fingerprint className="absolute inset-0 m-auto w-24 h-24 text-red-500" />
                             <motion.div
                                 className="absolute inset-0 bg-red-500/20 rounded-full"
                                 animate={{ opacity: [0, 0.5, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
+                                transition={{ duration: 1.5, repeat: 9999, repeatType: "loop" }}
                             />
                         </div>
                         <div className="text-center">

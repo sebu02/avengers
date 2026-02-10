@@ -313,30 +313,30 @@ export default function TimelinePage() {
             <div className="relative z-10 p-8 max-w-[1600px] mx-auto">
 
                 {/* Header */}
-                <header className="flex justify-between items-start mb-12">
+                <header className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
                     <motion.div
                         initial={{ x: -50, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                     >
                         <div className="flex items-center gap-4 mb-2">
-                            <div className="w-12 h-12 rounded-lg bg-cyan-500/20 border border-cyan-500 flex items-center justify-center">
-                                <Clock className="w-8 h-8 text-cyan-400" />
+                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-cyan-500/20 border border-cyan-500 flex items-center justify-center">
+                                <Clock className="w-6 h-6 md:w-8 md:h-8 text-cyan-400" />
                             </div>
                             <div>
-                                <h1 className="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                                <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 uppercase">
                                     TEMPORAL CONTROL CENTER
                                 </h1>
-                                <p className="text-[10px] text-cyan-700 tracking-[0.4em] uppercase font-bold">
+                                <p className="text-[8px] md:text-[10px] text-cyan-700 tracking-[0.4em] uppercase font-bold">
                                     Stark Industries // TVA Joint Division
                                 </p>
                             </div>
                         </div>
                     </motion.div>
 
-                    <div className="text-right flex flex-col items-end gap-2">
+                    <div className="w-full md:w-auto text-left md:text-right flex flex-col items-start md:items-end gap-2">
                         <div className="bg-black/40 border border-slate-800 rounded-xl px-4 py-2 backdrop-blur-md">
                             <div className="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Local Phase Time</div>
-                            <div className="text-2xl font-black text-cyan-400 leading-none">
+                            <div className="text-xl md:text-2xl font-black text-cyan-400 leading-none">
                                 {currentTime.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                             </div>
                         </div>
@@ -344,7 +344,7 @@ export default function TimelinePage() {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="px-4 py-1 bg-red-600/20 border border-red-500 text-red-500 text-[10px] font-black rounded uppercase"
+                                className="px-3 py-1 bg-red-600/20 border border-red-500 text-red-500 text-[10px] font-black rounded uppercase"
                             >
                                 Emergency Reset
                             </motion.button>
@@ -352,7 +352,7 @@ export default function TimelinePage() {
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="px-4 py-1 bg-blue-600/20 border border-blue-500 text-blue-500 text-[10px] font-black rounded uppercase"
+                                    className="px-3 py-1 bg-blue-600/20 border border-blue-500 text-blue-500 text-[10px] font-black rounded uppercase"
                                 >
                                     Exit UI
                                 </motion.button>
@@ -361,10 +361,10 @@ export default function TimelinePage() {
                     </div>
                 </header>
 
-                <main className="grid grid-cols-12 gap-8">
+                <main className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
                     {/* LEFT COLUMN: Controls & Status */}
-                    <div className="col-span-3 space-y-6">
+                    <div className="lg:col-span-3 space-y-6">
                         {/* Dimensional Status */}
                         <GlowingCard color="cyan">
                             <h3 className="text-xs font-black tracking-[0.2em] mb-4 flex items-center gap-2 text-cyan-400">
@@ -445,13 +445,13 @@ export default function TimelinePage() {
                     </div>
 
                     {/* CENTER COLUMN: Multiverse Map */}
-                    <div className="col-span-6 flex flex-col gap-8">
+                    <div className="lg:col-span-6 flex flex-col gap-8">
                         {/* Main Visualization */}
-                        <div className="bg-black/60 border border-slate-800 rounded-[2.5rem] p-8 backdrop-blur-md relative overflow-hidden h-[600px] flex flex-col">
-                            <div className="flex justify-between items-start mb-8 relative z-10">
+                        <div className="bg-black/60 border border-slate-800 rounded-[2.5rem] p-4 md:p-8 backdrop-blur-md relative overflow-hidden min-h-[400px] md:h-[600px] flex flex-col">
+                            <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-8 relative z-10">
                                 <div>
-                                    <h2 className="text-2xl font-black text-cyan-400 tracking-tighter uppercase italic flex items-center gap-3">
-                                        <GitBranch className="w-6 h-6" /> Multiverse Temporal Grid
+                                    <h2 className="text-xl md:text-2xl font-black text-cyan-400 tracking-tighter uppercase italic flex items-center gap-3">
+                                        <GitBranch className="w-5 h-5 md:w-6 md:h-6" /> Multiverse Temporal Grid
                                     </h2>
                                     <p className="text-[10px] text-slate-500 tracking-[0.2em] uppercase font-bold">Real-time branch analysis active</p>
                                 </div>
@@ -461,18 +461,18 @@ export default function TimelinePage() {
                                 </div>
                             </div>
 
-                            <div className="flex-1 relative">
+                            <div className="flex-1 relative min-h-[300px]">
                                 <TimelineGraph />
 
                                 {/* Overlay Stats */}
-                                <div className="absolute bottom-4 left-4 grid grid-cols-2 gap-4">
-                                    <div className="bg-black/60 border border-white/10 p-4 rounded-2xl backdrop-blur-md">
-                                        <div className="text-[8px] text-slate-500 uppercase font-black mb-1">Active Branches</div>
-                                        <div className="text-2xl font-black text-white tracking-widest leading-none">42,847</div>
+                                <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 grid grid-cols-2 gap-2 md:gap-4">
+                                    <div className="bg-black/60 border border-white/10 p-2 md:p-4 rounded-xl md:rounded-2xl backdrop-blur-md">
+                                        <div className="text-[7px] md:text-[8px] text-slate-500 uppercase font-black mb-1">Active Branches</div>
+                                        <div className="text-base md:text-2xl font-black text-white tracking-widest leading-none">42,847</div>
                                     </div>
-                                    <div className="bg-black/60 border border-white/10 p-4 rounded-2xl backdrop-blur-md">
-                                        <div className="text-[8px] text-slate-500 uppercase font-black mb-1">Reality Index</div>
-                                        <div className="text-2xl font-black text-white tracking-widest leading-none">0.9984</div>
+                                    <div className="bg-black/60 border border-white/10 p-2 md:p-4 rounded-xl md:rounded-2xl backdrop-blur-md">
+                                        <div className="text-[7px] md:text-[8px] text-slate-500 uppercase font-black mb-1">Reality Index</div>
+                                        <div className="text-base md:text-2xl font-black text-white tracking-widest leading-none">0.9984</div>
                                     </div>
                                 </div>
                             </div>
@@ -487,7 +487,7 @@ export default function TimelinePage() {
                         </div>
 
                         {/* Nexus Events Grid */}
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {NEXUS_EVENTS.map((event, i) => (
                                 <GlowingCard key={event.id} color={event.severity === 'OMEGA' ? 'red' : event.severity === 'CRITICAL' ? 'orange' : 'cyan'} delay={i * 0.1}>
                                     <div className="flex items-start gap-4">
@@ -513,7 +513,7 @@ export default function TimelinePage() {
                     </div>
 
                     {/* RIGHT COLUMN: Heist Details */}
-                    <div className="col-span-3 space-y-6">
+                    <div className="lg:col-span-3 space-y-6">
                         <div className="bg-black/40 border border-slate-800 rounded-2xl p-6 backdrop-blur-md h-full">
                             <h3 className="text-xs font-black tracking-[0.2em] mb-6 flex items-center gap-2 text-cyan-400">
                                 <Target size={14} /> TIME HEIST LOG

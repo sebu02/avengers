@@ -5,8 +5,8 @@ import {
     LayoutDashboard, CheckSquare, Bug, Settings, LogOut, Users, Plane,
     ChevronLeft, ChevronRight, Radio, Lock, Target, Cpu, GitBranch
 } from "lucide-react";
+import { motion } from "framer-motion";
 import clsx from "clsx";
-import { useState } from "react";
 
 const navItems = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -22,14 +22,20 @@ const navItems = [
     { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-export default function Sidebar({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) {
+interface SidebarProps {
+    isOpen: boolean;
+    toggle: () => void;
+    isMobile?: boolean;
+}
+
+export default function Sidebar({ isOpen, toggle, isMobile = false }: SidebarProps) {
     const pathname = usePathname();
 
     return (
         <aside
             className={clsx(
-                "h-screen bg-card border-r border-border flex flex-col fixed top-0 left-0 transition-all duration-300 z-50",
-                isOpen ? "w-64 p-6" : "w-20 p-4"
+                "h-full bg-card flex flex-col transition-all duration-300",
+                isOpen ? "w-full p-6" : "w-full p-4"
             )}
         >
             <div className="flex items-center gap-3 mb-10 relative">
@@ -44,21 +50,26 @@ export default function Sidebar({ isOpen, toggle }: { isOpen: boolean; toggle: (
                     </h1>
                 </div>
 
-                <button
-                    onClick={toggle}
-                    className="absolute -right-10 top-1 bg-card border border-border rounded-full p-1 shadow-md hover:bg-accent transition-colors z-50 transform hover:scale-110"
-                >
-                    {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
-                </button>
+                {!isMobile && (
+                    <button
+                        onClick={toggle}
+                        className="absolute -right-10 top-1 bg-card border border-border rounded-full p-1 shadow-md hover:bg-accent transition-colors z-50 transform hover:scale-110"
+                    >
+                        {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+                    </button>
+                )}
             </div>
 
-            <nav className="flex-1 space-y-2">
+            <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-2">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href;
                     return (
                         <Link
                             key={item.href}
                             href={item.href}
+                            onClick={() => {
+                                if (isMobile) toggle();
+                            }}
                             className={clsx(
                                 "relative flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300 group overflow-hidden",
                                 isActive
@@ -69,7 +80,10 @@ export default function Sidebar({ isOpen, toggle }: { isOpen: boolean; toggle: (
                             title={!isOpen ? item.label : undefined}
                         >
                             {isActive && isOpen && (
-                                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-50" />
+                                <motion.div
+                                    layoutId="activeNav"
+                                    className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-50"
+                                />
                             )}
                             <item.icon
                                 className={clsx(
@@ -80,7 +94,7 @@ export default function Sidebar({ isOpen, toggle }: { isOpen: boolean; toggle: (
 
                             <span
                                 className={clsx(
-                                    "font-medium tracking-wide z-10 uppercase text-xs whitespace-nowrap transition-all duration-300",
+                                    "font-medium tracking-wide z-10 uppercase text-[10px] whitespace-nowrap transition-all duration-300",
                                     isOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 absolute"
                                 )}
                             >
@@ -91,10 +105,10 @@ export default function Sidebar({ isOpen, toggle }: { isOpen: boolean; toggle: (
                 })}
             </nav>
 
-            <div className={clsx("pt-6 border-t border-border transition-all duration-300", !isOpen && "flex justify-center")}>
+            <div className={clsx("pt-6 border-t border-border mt-auto", !isOpen && "flex justify-center")}>
                 <button className={clsx("flex items-center gap-3 text-muted-foreground hover:text-destructive transition-colors rounded-lg hover:bg-destructive/10 p-2", isOpen ? "w-full px-4" : "justify-center")}>
                     <LogOut className="w-5 h-5" />
-                    {isOpen && <span>Logout</span>}
+                    {isOpen && <span className="text-xs font-bold uppercase tracking-wider">Logout</span>}
                 </button>
             </div>
         </aside>
