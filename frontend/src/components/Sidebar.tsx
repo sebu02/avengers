@@ -4,10 +4,12 @@ import { usePathname } from "next/navigation";
 import {
     LayoutDashboard, CheckSquare, Bug, Settings, LogOut, Users, Plane,
     ChevronLeft, ChevronRight, Radio, Lock, Target, Cpu, GitBranch, ShieldAlert,
-    Shield
+    Shield, Map
 } from "lucide-react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
+
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const navItems = [
     { href: "/", label: "Avengers Command", icon: LayoutDashboard },
@@ -20,6 +22,7 @@ const navItems = [
     { href: "/jarvis", label: "JARVIS Control", icon: Cpu },
     { href: "/timeline", label: "Timeline Branch", icon: GitBranch },
     { href: "/prison", label: "The Raft", icon: Lock },
+    { href: "/wakanda", label: "Wakanda", icon: Map },
     { href: "/settings", label: "Settings", icon: Settings },
 ];
 
@@ -62,7 +65,7 @@ export default function Sidebar({ isOpen, toggle, isMobile = false, onShutdown }
                 )}
             </div>
 
-            <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-2">
+            <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-2 pb-6">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href;
                     return (
@@ -107,7 +110,8 @@ export default function Sidebar({ isOpen, toggle, isMobile = false, onShutdown }
                 })}
             </nav>
 
-            <div className={clsx("pt-6 border-t border-white/5 mt-auto bg-gradient-to-t from-primary/5 to-transparent", !isOpen && "flex justify-center")}>
+            <div className={clsx("pt-6 border-t border-white/5 mt-auto bg-gradient-to-t from-primary/5 to-transparent space-y-4", !isOpen && "flex flex-col items-center")}>
+                {isOpen && <ThemeSwitcher />}
                 <button
                     onClick={() => {
                         if (onShutdown) onShutdown();

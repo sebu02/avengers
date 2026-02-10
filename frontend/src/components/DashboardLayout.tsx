@@ -35,9 +35,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             enableSystem={false}
             disableTransitionOnChange
         >
-            <div className="flex h-screen overflow-hidden bg-background text-foreground bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-background to-background relative">
+            <div className="flex h-screen overflow-hidden bg-background text-foreground relative transition-all duration-700">
                 {/* Global Background Effect */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(var(--primary)/0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgb(var(--primary)/0.05)_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgb(var(--primary)/0.15),transparent_70%)] pointer-events-none" />
 
                 <ShutdownOverlay isTriggered={isShuttingDown} onComplete={() => setIsShuttingDown(false)} />
 

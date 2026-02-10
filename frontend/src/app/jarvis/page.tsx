@@ -618,60 +618,68 @@ const TimeTravelModal = ({ onClose }: any) => (
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center"
-        onClick={onClose}
+        className="fixed inset-0 z-50 overflow-y-auto custom-scrollbar"
     >
         <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-slate-900 border-2 border-purple-600 rounded-xl p-8 max-w-2xl w-full"
-        >
-            <h2 className="text-3xl font-black text-purple-500 mb-6 text-center">QUANTUM TIME TRAVEL</h2>
-
-            {/* Time Loop Visual */}
-            <div className="relative h-64 mb-6">
-                <motion.div
-                    className="absolute inset-0 border-4 border-purple-500 rounded-full"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 10, repeat: 9999, repeatType: "loop", ease: "linear" }}
-                />
-                <motion.div
-                    className="absolute inset-8 border-4 border-cyan-500 rounded-full"
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 8, repeat: 9999, repeatType: "loop", ease: "linear" }}
-                />
-                <motion.div
-                    className="absolute inset-16 border-4 border-blue-500 rounded-full"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 6, repeat: 9999, repeatType: "loop", ease: "linear" }}
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <Clock className="w-32 h-32 text-purple-500" />
-                </div>
-            </div>
-
-            {/* Year Selector */}
-            <div className="grid grid-cols-3 gap-3 mb-6">
-                {[2012, 2014, 2018, 2023, 2025, 2030].map((year) => (
-                    <motion.button
-                        key={year}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="py-3 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-500 transition-all"
-                    >
-                        {year}
-                    </motion.button>
-                ))}
-            </div>
-
-            <button
-                onClick={onClose}
-                className="w-full py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-all"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/90 backdrop-blur-xl"
+            onClick={onClose}
+        />
+        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+            <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative bg-slate-900 border-2 border-purple-600 rounded-xl p-8 max-w-2xl w-full"
             >
-                CLOSE
-            </button>
-        </motion.div>
+                <h2 className="text-3xl font-black text-purple-500 mb-6 text-center">QUANTUM TIME TRAVEL</h2>
+
+                {/* Time Loop Visual */}
+                <div className="relative h-64 mb-6">
+                    <motion.div
+                        className="absolute inset-0 border-4 border-purple-500 rounded-full"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 10, repeat: 9999, repeatType: "loop", ease: "linear" }}
+                    />
+                    <motion.div
+                        className="absolute inset-8 border-4 border-cyan-500 rounded-full"
+                        animate={{ rotate: -360 }}
+                        transition={{ duration: 8, repeat: 9999, repeatType: "loop", ease: "linear" }}
+                    />
+                    <motion.div
+                        className="absolute inset-16 border-4 border-blue-500 rounded-full"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 6, repeat: 9999, repeatType: "loop", ease: "linear" }}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <Clock className="w-32 h-32 text-purple-500" />
+                    </div>
+                </div>
+
+                {/* Year Selector */}
+                <div className="grid grid-cols-3 gap-3 mb-6">
+                    {[2012, 2014, 2018, 2023, 2025, 2030].map((year) => (
+                        <motion.button
+                            key={year}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="py-3 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-500 transition-all"
+                        >
+                            {year}
+                        </motion.button>
+                    ))}
+                </div>
+
+                <button
+                    onClick={onClose}
+                    className="w-full py-3 bg-gray-700 text-white rounded-lg font-bold hover:bg-gray-600 transition-all"
+                >
+                    CLOSE
+                </button>
+            </motion.div>
+        </div>
     </motion.div>
 );

@@ -4,93 +4,115 @@
 
 @layer base {
   :root {
-    /* Stark Industries (Light Mode) */
-    --background: 248 250 252;
-    /* Slate-50 */
+    /* Super Light Mode - Stark Clean UI */
+    --background: 255 255 255;
     --foreground: 15 23 42;
-    /* Slate-950 */
 
-    --card: 255 255 255;
+    --card: 248 250 252;
     --card-foreground: 15 23 42;
 
     --popover: 255 255 255;
     --popover-foreground: 15 23 42;
 
-    --primary: 185 28 28;
-    /* Iron Man Red (Red-700) */
+    --primary: 14 165 233;
+    /* Arc Reactor Blue */
     --primary-foreground: 255 255 255;
 
-    --secondary: 226 232 240;
-    /* Slate-200 (Silver/Metal) */
+    --secondary: 241 245 249;
     --secondary-foreground: 15 23 42;
 
     --muted: 241 245 249;
     --muted-foreground: 100 116 139;
 
-    --accent: 251 191 36;
-    /* Gold (Amber-400) */
+    --accent: 148 163 184;
     --accent-foreground: 15 23 42;
 
-    --destructive: 220 38 38;
+    --destructive: 239 68 68;
     --destructive-foreground: 255 255 255;
 
-    --border: 203 213 225;
-    --input: 203 213 225;
-    --ring: 185 28 28;
+    --border: 226 232 240;
+    --input: 226 232 240;
+    --ring: 14 165 233;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
   }
 
   .dark {
-    /* S.H.I.E.L.D. Interface (Dark Mode) */
+    /* S.H.I.E.L.D. Interface */
     --background: 2 6 23;
-    /* Slate-950 (Deep Space) */
     --foreground: 224 242 254;
-    /* Sky-100 (Hologram Text) */
 
     --card: 15 23 42;
-    /* Slate-900 */
     --card-foreground: 224 242 254;
 
     --popover: 15 23 42;
     --popover-foreground: 224 242 254;
 
     --primary: 14 165 233;
-    /* Arc Reactor Blue (Sky-500) */
     --primary-foreground: 255 255 255;
 
     --secondary: 30 41 59;
-    /* Slate-800 (Dark Metal) */
     --secondary-foreground: 224 242 254;
 
     --muted: 30 41 59;
     --muted-foreground: 148 163 184;
 
     --accent: 245 158 11;
-    /* UI Amber (Amber-500) */
     --accent-foreground: 255 255 255;
 
     --destructive: 239 68 68;
-    /* Warning Red (Red-500) */
     --destructive-foreground: 255 255 255;
 
     --border: 30 58 138;
-    /* Blue-900 (Tech Borders) */
     --input: 30 58 138;
     --ring: 14 165 233;
-    /* Glowing Ring */
+  }
+
+  /* AVENGER THEME OVERRIDES */
+  .theme-ironman {
+    --primary: 185 28 28;
+    /* Iron Man Red */
+    --accent: 245 158 11;
+    /* Gold */
+    --ring: 185 28 28;
+  }
+
+  .theme-cap {
+    --primary: 30 58 138;
+    /* Cap Blue */
+    --accent: 226 232 240;
+    /* Silver */
+    --ring: 30 58 138;
+  }
+
+  .theme-hulk {
+    --primary: 22 163 74;
+    /* Hulk Green */
+    --accent: 126 34 206;
+    /* Purple */
+    --ring: 22 163 74;
+  }
+
+  .theme-thor {
+    --primary: 56 189 248;
+    /* Lightning Blue */
+    --accent: 148 163 184;
+    /* Asgardian Silver */
+    --ring: 56 189 248;
+  }
+
+  .theme-blackwidow {
+    --primary: 15 23 42;
+    /* Spy Black */
+    --accent: 220 38 38;
+    /* Widow Red */
+    --ring: 220 38 38;
   }
 }
 
 @layer base {
   body {
     @apply bg-background text-foreground transition-colors duration-300;
-  }
-}
-
-@layer utilities {
-  .animate-spin-slow {
-    animation: spin 8s linear infinite;
   }
 }
 
@@ -121,12 +143,40 @@
 /* Custom Avengers Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-background;
+  background: hsl(var(--background));
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary/30 rounded-full hover:bg-primary/50 transition-colors;
+  background: hsla(var(--primary), 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsla(var(--primary), 0.5);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsla(var(--primary), 0.3) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsla(var(--primary), 0.3);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsla(var(--primary), 0.5);
 }

@@ -286,119 +286,121 @@ export default function MissionsPage() {
             {/* MISSION DETAIL DIALOG */}
             <AnimatePresence>
                 {selectedMission && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <div className="fixed inset-0 z-[100] overflow-y-auto custom-scrollbar">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-black/95 backdrop-blur-2xl"
+                            className="fixed inset-0 bg-black/95 backdrop-blur-2xl"
                             onClick={() => setSelectedMission(null)}
                         />
-                        <motion.div
-                            initial={{ scale: 0.95, opacity: 0, y: 30 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.95, opacity: 0, y: 30 }}
-                            className="relative w-full max-w-3xl bg-slate-950 border-2 border-cyan-500/30 rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.2)]"
-                        >
-                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ scale: 0.95, opacity: 0, y: 30 }}
+                                animate={{ scale: 1, opacity: 1, y: 0 }}
+                                exit={{ scale: 0.95, opacity: 0, y: 30 }}
+                                className="relative w-full max-w-3xl bg-slate-950 border-2 border-cyan-500/30 rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.2)]"
+                            >
+                                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
 
-                            <div className="p-12 space-y-10">
-                                <div className="flex justify-between items-start">
-                                    <div className="space-y-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-2 h-6 bg-cyan-500 shadow-[0_0_10px_cyan]" />
-                                            <span className="text-[10px] font-black text-cyan-500 uppercase tracking-[0.5em]">MISSION DEBRIEF: {selectedMission.id}</span>
+                                <div className="p-12 space-y-10">
+                                    <div className="flex justify-between items-start">
+                                        <div className="space-y-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-2 h-6 bg-cyan-500 shadow-[0_0_10px_cyan]" />
+                                                <span className="text-[10px] font-black text-cyan-500 uppercase tracking-[0.5em]">MISSION DEBRIEF: {selectedMission.id}</span>
+                                            </div>
+                                            <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter max-w-md">{selectedMission.title}</h2>
                                         </div>
-                                        <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter max-w-md">{selectedMission.title}</h2>
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => {
-                                                openModal(selectedMission);
-                                                setSelectedMission(null);
-                                            }}
-                                            className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:border-cyan-500 hover:text-cyan-500 transition-all hover:scale-105"
-                                        >
-                                            <Edit2 size={24} />
-                                        </button>
-                                        <button
-                                            onClick={() => setSelectedMission(null)}
-                                            className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-red-500/10 hover:border-red-500 hover:text-red-500 transition-all hover:scale-105"
-                                        >
-                                            <X size={24} />
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-                                    <div className="space-y-8">
-                                        <div className="p-8 bg-white/5 border border-white/10 rounded-3xl relative group overflow-hidden">
-                                            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
-                                                <Target size={60} />
-                                            </div>
-                                            <h4 className="text-[9px] font-black text-cyan-500 uppercase tracking-[0.3em] mb-4">Tactical Intelligence</h4>
-                                            <p className="text-slate-300 font-medium text-sm leading-relaxed italic">
-                                                "Current satellite scans indicate fluctuating energy readings in this sector. Assigned operatives are advised to proceed with extreme caution. Standard engagement protocols apply."
-                                            </p>
-                                        </div>
-
-                                        <div className="grid grid-cols-2 gap-6">
-                                            <div className="p-5 bg-black/40 border border-white/10 rounded-2xl">
-                                                <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Alert Level</span>
-                                                <span className={clsx("text-lg font-black uppercase italic", selectedMission.priority >= 3 ? "text-red-500" : "text-cyan-500")}>
-                                                    {selectedMission.priority >= 3 ? "CRITICAL" : "STANDARD"}
-                                                </span>
-                                            </div>
-                                            <div className="p-5 bg-black/40 border border-white/10 rounded-2xl">
-                                                <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Status</span>
-                                                <span className="text-lg font-black text-white uppercase italic">{selectedMission.status}</span>
-                                            </div>
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={() => {
+                                                    openModal(selectedMission);
+                                                    setSelectedMission(null);
+                                                }}
+                                                className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:border-cyan-500 hover:text-cyan-500 transition-all hover:scale-105"
+                                            >
+                                                <Edit2 size={24} />
+                                            </button>
+                                            <button
+                                                onClick={() => setSelectedMission(null)}
+                                                className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-red-500/10 hover:border-red-500 hover:text-red-500 transition-all hover:scale-105"
+                                            >
+                                                <X size={24} />
+                                            </button>
                                         </div>
                                     </div>
 
-                                    <div className="space-y-8">
-                                        <div className="aspect-square bg-slate-900/60 rounded-3xl border border-white/10 overflow-hidden relative group">
-                                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)] z-10" />
-                                            <img src={`https://api.dicebear.com/7.x/shapes/svg?seed=${selectedMission.id}`} className="w-full h-full object-cover opacity-20 grayscale" alt="Tactical Map" />
-                                            <div className="absolute inset-0 flex items-center justify-center z-20">
-                                                <div className="text-center group-hover:scale-105 transition-transform">
-                                                    <Search className="text-cyan-500 mx-auto mb-3 animate-pulse" size={40} />
-                                                    <span className="text-[10px] font-black text-cyan-500 uppercase tracking-widest">ACCESS TACTICAL MAP</span>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                                        <div className="space-y-8">
+                                            <div className="p-8 bg-white/5 border border-white/10 rounded-3xl relative group overflow-hidden">
+                                                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
+                                                    <Target size={60} />
+                                                </div>
+                                                <h4 className="text-[9px] font-black text-cyan-500 uppercase tracking-[0.3em] mb-4">Tactical Intelligence</h4>
+                                                <p className="text-slate-300 font-medium text-sm leading-relaxed italic">
+                                                    "Current satellite scans indicate fluctuating energy readings in this sector. Assigned operatives are advised to proceed with extreme caution. Standard engagement protocols apply."
+                                                </p>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-6">
+                                                <div className="p-5 bg-black/40 border border-white/10 rounded-2xl">
+                                                    <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Alert Level</span>
+                                                    <span className={clsx("text-lg font-black uppercase italic", selectedMission.priority >= 3 ? "text-red-500" : "text-cyan-500")}>
+                                                        {selectedMission.priority >= 3 ? "CRITICAL" : "STANDARD"}
+                                                    </span>
+                                                </div>
+                                                <div className="p-5 bg-black/40 border border-white/10 rounded-2xl">
+                                                    <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Status</span>
+                                                    <span className="text-lg font-black text-white uppercase italic">{selectedMission.status}</span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className="flex gap-4">
-                                            <button className="flex-1 py-4 bg-white/5 border border-white/10 text-[10px] font-black text-white hover:bg-white/10 transition-all rounded-2xl uppercase tracking-[0.2em] flex items-center justify-center gap-2">
-                                                <MessageSquare size={14} /> Team Comm
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    apiDeleteTask(selectedMission.id).then(() => {
-                                                        fetchTasks();
-                                                        setSelectedMission(null);
-                                                    });
-                                                }}
-                                                className="px-6 py-4 border-2 border-red-500/20 text-red-500 hover:bg-red-500/10 transition-all rounded-2xl"
-                                            >
-                                                <Trash2 size={20} />
-                                            </button>
+                                        <div className="space-y-8">
+                                            <div className="aspect-square bg-slate-900/60 rounded-3xl border border-white/10 overflow-hidden relative group">
+                                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)] z-10" />
+                                                <img src={`https://api.dicebear.com/7.x/shapes/svg?seed=${selectedMission.id}`} className="w-full h-full object-cover opacity-20 grayscale" alt="Tactical Map" />
+                                                <div className="absolute inset-0 flex items-center justify-center z-20">
+                                                    <div className="text-center group-hover:scale-105 transition-transform">
+                                                        <Search className="text-cyan-500 mx-auto mb-3 animate-pulse" size={40} />
+                                                        <span className="text-[10px] font-black text-cyan-500 uppercase tracking-widest">ACCESS TACTICAL MAP</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex gap-4">
+                                                <button className="flex-1 py-4 bg-white/5 border border-white/10 text-[10px] font-black text-white hover:bg-white/10 transition-all rounded-2xl uppercase tracking-[0.2em] flex items-center justify-center gap-2">
+                                                    <MessageSquare size={14} /> Team Comm
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        apiDeleteTask(selectedMission.id).then(() => {
+                                                            fetchTasks();
+                                                            setSelectedMission(null);
+                                                        });
+                                                    }}
+                                                    className="px-6 py-4 border-2 border-red-500/20 text-red-500 hover:bg-red-500/10 transition-all rounded-2xl"
+                                                >
+                                                    <Trash2 size={20} />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="bg-cyan-950/20 p-6 border-t border-cyan-500/10 flex justify-between items-center">
-                                <div className="flex items-center gap-4">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-                                        <span className="text-[9px] font-black text-cyan-500 uppercase tracking-widest italic">Uplink Secured</span>
+                                <div className="bg-cyan-950/20 p-6 border-t border-cyan-500/10 flex justify-between items-center">
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                                            <span className="text-[9px] font-black text-cyan-500 uppercase tracking-widest italic">Uplink Secured</span>
+                                        </div>
+                                        <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">{format(new Date(), "yyyy-MM-dd HH:mm:ss")}</span>
                                     </div>
-                                    <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">{format(new Date(), "yyyy-MM-dd HH:mm:ss")}</span>
+                                    <span className="text-[9px] font-bold text-slate-600 uppercase tracking-widest">End of Directive</span>
                                 </div>
-                                <span className="text-[9px] font-bold text-slate-600 uppercase tracking-widest">End of Directive</span>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        </div>
                     </div>
                 )}
             </AnimatePresence>
@@ -406,58 +408,60 @@ export default function MissionsPage() {
             {/* EDIT/CREATE MODAL */}
             <AnimatePresence>
                 {isModalOpen && (
-                    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/95 backdrop-blur-md" onClick={closeModal} />
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0, y: 30 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.9, opacity: 0, y: 30 }}
-                            className="relative w-full max-w-xl bg-slate-900 border-2 border-cyan-500/30 p-12 space-y-10 rounded-3xl shadow-[0_0_80px_rgba(6,182,212,0.3)]"
-                        >
-                            <div className="space-y-2">
-                                <h2 className="text-3xl font-black text-white tracking-widest uppercase italic">Tactical Briefing</h2>
-                                <p className="text-[10px] text-cyan-500 font-bold uppercase tracking-[0.3em]">Authorized Command Only</p>
-                            </div>
+                    <div className="fixed inset-0 z-[110] overflow-y-auto custom-scrollbar">
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/95 backdrop-blur-md" onClick={closeModal} />
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0, y: 30 }}
+                                animate={{ scale: 1, opacity: 1, y: 0 }}
+                                exit={{ scale: 0.9, opacity: 0, y: 30 }}
+                                className="relative w-full max-w-xl bg-slate-900 border-2 border-cyan-500/30 p-12 space-y-10 rounded-3xl shadow-[0_0_80px_rgba(6,182,212,0.3)]"
+                            >
+                                <div className="space-y-2">
+                                    <h2 className="text-3xl font-black text-white tracking-widest uppercase italic">Tactical Briefing</h2>
+                                    <p className="text-[10px] text-cyan-500 font-bold uppercase tracking-[0.3em]">Authorized Command Only</p>
+                                </div>
 
-                            <div className="space-y-8">
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Directive Title</label>
-                                    <input
-                                        value={title}
-                                        onChange={e => setTitle(e.target.value)}
-                                        className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-sm focus:border-cyan-500 outline-none transition-all rounded-xl placeholder:text-white/10"
-                                        placeholder="ENCRYPTED TITLE REQUIRED..."
-                                    />
-                                </div>
-                                <div className="grid grid-cols-2 gap-8">
+                                <div className="space-y-8">
                                     <div className="space-y-3">
-                                        <label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Threat Assessment</label>
-                                        <select value={priority} onChange={e => setPriority(Number(e.target.value))} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-cyan-500 outline-none rounded-xl appearance-none cursor-pointer">
-                                            <option value={1}>LEVEL 1: ROUTINE</option>
-                                            <option value={2}>LEVEL 2: URGENT</option>
-                                            <option value={3}>LEVEL 3: CRITICAL</option>
-                                        </select>
+                                        <label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Directive Title</label>
+                                        <input
+                                            value={title}
+                                            onChange={e => setTitle(e.target.value)}
+                                            className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-sm focus:border-cyan-500 outline-none transition-all rounded-xl placeholder:text-white/10"
+                                            placeholder="ENCRYPTED TITLE REQUIRED..."
+                                        />
                                     </div>
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Deployment Phase</label>
-                                        <select value={status} onChange={e => setStatus(e.target.value as any)} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-cyan-500 outline-none rounded-xl appearance-none cursor-pointer">
-                                            <option value="TODO">WAITING</option>
-                                            <option value="IN_PROGRESS">DEPLOYED</option>
-                                            <option value="DONE">SUCCESS</option>
-                                        </select>
+                                    <div className="grid grid-cols-2 gap-8">
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Threat Assessment</label>
+                                            <select value={priority} onChange={e => setPriority(Number(e.target.value))} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-cyan-500 outline-none rounded-xl appearance-none cursor-pointer">
+                                                <option value={1}>LEVEL 1: ROUTINE</option>
+                                                <option value={2}>LEVEL 2: URGENT</option>
+                                                <option value={3}>LEVEL 3: CRITICAL</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Deployment Phase</label>
+                                            <select value={status} onChange={e => setStatus(e.target.value as any)} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-cyan-500 outline-none rounded-xl appearance-none cursor-pointer">
+                                                <option value="TODO">WAITING</option>
+                                                <option value="IN_PROGRESS">DEPLOYED</option>
+                                                <option value="DONE">SUCCESS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="pt-4">
+                                        <button
+                                            onClick={handleSave}
+                                            className="w-full py-5 bg-cyan-600 text-white font-black text-xs tracking-[0.4em] uppercase hover:bg-cyan-500 transition-all flex items-center justify-center gap-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.2)] active:scale-95 group"
+                                        >
+                                            <Save size={18} className="group-hover:rotate-12 transition-transform" />
+                                            {editingTask ? "Update Briefing" : "Issue Mission"}
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="pt-4">
-                                    <button
-                                        onClick={handleSave}
-                                        className="w-full py-5 bg-cyan-600 text-white font-black text-xs tracking-[0.4em] uppercase hover:bg-cyan-500 transition-all flex items-center justify-center gap-4 rounded-xl shadow-[0_10px_30px_rgba(6,182,212,0.2)] active:scale-95 group"
-                                    >
-                                        <Save size={18} className="group-hover:rotate-12 transition-transform" />
-                                        {editingTask ? "Update Briefing" : "Issue Mission"}
-                                    </button>
-                                </div>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        </div>
                     </div>
                 )}
             </AnimatePresence>

@@ -4,7 +4,7 @@ import {
     Plus, ShieldAlert, AlertCircle, RefreshCcw, X, Edit, Trash2,
     CheckCircle2, Clock, DollarSign, Hammer, User, Activity, Flame,
     TrendingDown, ShieldCheck, Map, CreditCard, Box, Zap,
-    Database, Search, Target, ChevronRight,Save
+    Database, Search, Target, ChevronRight, Save
 } from "lucide-react";
 import clsx from "clsx";
 import { Bug } from "@/types";
@@ -254,121 +254,123 @@ export default function DamageAssessmentPage() {
             {/* DAMAGE DETAIL DIALOG */}
             <AnimatePresence>
                 {selectedReport && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <div className="fixed inset-0 z-[100] overflow-y-auto custom-scrollbar">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-black/95 backdrop-blur-2xl"
+                            className="fixed inset-0 bg-black/95 backdrop-blur-2xl"
                             onClick={() => setSelectedReport(null)}
                         />
-                        <motion.div
-                            initial={{ scale: 0.95, opacity: 0, y: 30 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.95, opacity: 0, y: 30 }}
-                            className="relative w-full max-w-3xl bg-slate-950 border-2 border-orange-500/30 rounded-[44px] overflow-hidden shadow-[0_0_100px_rgba(249,115,22,0.15)]"
-                        >
-                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ scale: 0.95, opacity: 0, y: 30 }}
+                                animate={{ scale: 1, opacity: 1, y: 0 }}
+                                exit={{ scale: 0.95, opacity: 0, y: 30 }}
+                                className="relative w-full max-w-3xl bg-slate-950 border-2 border-orange-500/30 rounded-[44px] overflow-hidden shadow-[0_0_100px_rgba(249,115,22,0.15)]"
+                            >
+                                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
 
-                            <div className="p-12 space-y-10 relative">
-                                <div className="flex justify-between items-start">
-                                    <div className="space-y-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-2 h-6 bg-orange-500 shadow-[0_0_10px_orange]" />
-                                            <span className="text-[10px] font-black text-orange-500 uppercase tracking-[0.5em]">INCIDENT CASE: {selectedReport.id}</span>
+                                <div className="p-12 space-y-10 relative">
+                                    <div className="flex justify-between items-start">
+                                        <div className="space-y-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-2 h-6 bg-orange-500 shadow-[0_0_10px_orange]" />
+                                                <span className="text-[10px] font-black text-orange-500 uppercase tracking-[0.5em]">INCIDENT CASE: {selectedReport.id}</span>
+                                            </div>
+                                            <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter max-w-md leading-none">{selectedReport.title}</h2>
                                         </div>
-                                        <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter max-w-md leading-none">{selectedReport.title}</h2>
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => {
-                                                openModal(selectedReport);
-                                                setSelectedReport(null);
-                                            }}
-                                            className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:border-orange-500 hover:text-orange-500 transition-all hover:scale-110 active:scale-95"
-                                        >
-                                            <Edit size={24} />
-                                        </button>
-                                        <button
-                                            onClick={() => setSelectedReport(null)}
-                                            className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all hover:scale-110 active:scale-95"
-                                        >
-                                            <X size={24} />
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-                                    <div className="space-y-8">
-                                        <div className="p-8 bg-orange-500/5 border border-orange-500/10 rounded-[32px] relative group overflow-hidden">
-                                            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
-                                                <ShieldAlert size={60} />
-                                            </div>
-                                            <h4 className="text-[9px] font-black text-orange-500 uppercase tracking-[0.3em] mb-4">Damage Debrief</h4>
-                                            <p className="text-slate-300 font-medium text-sm leading-relaxed italic">
-                                                "{selectedReport.description || "The mission resulted in significant architectural strain. Full liability assessment is underway. Local authorities have been notified."}"
-                                            </p>
-                                        </div>
-
-                                        <div className="grid grid-cols-2 gap-6">
-                                            <div className="p-6 bg-black/40 border border-white/5 rounded-2xl">
-                                                <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Impact Cost</span>
-                                                <span className="text-xl font-black text-white italic">${(selectedReport.priority * 150000).toLocaleString()}</span>
-                                            </div>
-                                            <div className="p-6 bg-black/40 border border-white/5 rounded-2xl">
-                                                <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Status Phase</span>
-                                                <span className="text-xl font-black text-orange-500 uppercase italic leading-none">{selectedReport.status}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-8">
-                                        <div className="aspect-video bg-black/60 rounded-[32px] border border-white/10 overflow-hidden relative group">
-                                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)] z-10" />
-                                            <div className="absolute inset-0 flex items-center justify-center z-20">
-                                                <div className="text-center group-hover:scale-110 transition-transform">
-                                                    <Target size={48} className="text-orange-500 mx-auto mb-4 animate-pulse" />
-                                                    <span className="text-[10px] font-black text-orange-500/50 uppercase tracking-[0.3em]">SCAN INCIDENT COORDINATES</span>
-                                                </div>
-                                            </div>
-                                            {/* Decorative Scan Lines */}
-                                            <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-                                                {[...Array(20)].map((_, i) => (
-                                                    <div key={i} className="h-[1px] w-full bg-orange-500/50 mt-2" />
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <div className="flex gap-4">
-                                            <button className="flex-1 py-5 bg-orange-600 text-white font-black text-[10px] uppercase tracking-[0.3em] hover:bg-orange-500 transition-all rounded-[20px] shadow-[0_15px_30px_rgba(249,115,22,0.2)] flex items-center justify-center gap-3 active:scale-95">
-                                                <CreditCard size={18} /> Authorize Payment
-                                            </button>
+                                        <div className="flex gap-3">
                                             <button
                                                 onClick={() => {
-                                                    deleteBug(selectedReport.id).then(() => {
-                                                        fetchReports();
-                                                        setSelectedReport(null);
-                                                    });
+                                                    openModal(selectedReport);
+                                                    setSelectedReport(null);
                                                 }}
-                                                className="px-6 py-5 bg-white/5 border border-white/10 text-red-500 hover:bg-red-500/10 hover:border-red-500/50 transition-all rounded-[20px] active:scale-95"
+                                                className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:border-orange-500 hover:text-orange-500 transition-all hover:scale-110 active:scale-95"
                                             >
-                                                <Trash2 size={20} />
+                                                <Edit size={24} />
+                                            </button>
+                                            <button
+                                                onClick={() => setSelectedReport(null)}
+                                                className="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all hover:scale-110 active:scale-95"
+                                            >
+                                                <X size={24} />
                                             </button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div className="bg-orange-950/20 p-6 border-t border-orange-500/10 flex justify-between items-center">
-                                <div className="flex items-center gap-4">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                                        <span className="text-[9px] font-black text-orange-500 uppercase tracking-widest">Insurance Uplink Secure</span>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                                        <div className="space-y-8">
+                                            <div className="p-8 bg-orange-500/5 border border-orange-500/10 rounded-[32px] relative group overflow-hidden">
+                                                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform">
+                                                    <ShieldAlert size={60} />
+                                                </div>
+                                                <h4 className="text-[9px] font-black text-orange-500 uppercase tracking-[0.3em] mb-4">Damage Debrief</h4>
+                                                <p className="text-slate-300 font-medium text-sm leading-relaxed italic">
+                                                    "{selectedReport.description || "The mission resulted in significant architectural strain. Full liability assessment is underway. Local authorities have been notified."}"
+                                                </p>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-6">
+                                                <div className="p-6 bg-black/40 border border-white/5 rounded-2xl">
+                                                    <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Impact Cost</span>
+                                                    <span className="text-xl font-black text-white italic">${(selectedReport.priority * 150000).toLocaleString()}</span>
+                                                </div>
+                                                <div className="p-6 bg-black/40 border border-white/5 rounded-2xl">
+                                                    <span className="text-[8px] font-black text-slate-500 uppercase block mb-1">Status Phase</span>
+                                                    <span className="text-xl font-black text-orange-500 uppercase italic leading-none">{selectedReport.status}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-8">
+                                            <div className="aspect-video bg-black/60 rounded-[32px] border border-white/10 overflow-hidden relative group">
+                                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)] z-10" />
+                                                <div className="absolute inset-0 flex items-center justify-center z-20">
+                                                    <div className="text-center group-hover:scale-110 transition-transform">
+                                                        <Target size={48} className="text-orange-500 mx-auto mb-4 animate-pulse" />
+                                                        <span className="text-[10px] font-black text-orange-500/50 uppercase tracking-[0.3em]">SCAN INCIDENT COORDINATES</span>
+                                                    </div>
+                                                </div>
+                                                {/* Decorative Scan Lines */}
+                                                <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+                                                    {[...Array(20)].map((_, i) => (
+                                                        <div key={i} className="h-[1px] w-full bg-orange-500/50 mt-2" />
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="flex gap-4">
+                                                <button className="flex-1 py-5 bg-orange-600 text-white font-black text-[10px] uppercase tracking-[0.3em] hover:bg-orange-500 transition-all rounded-[20px] shadow-[0_15px_30px_rgba(249,115,22,0.2)] flex items-center justify-center gap-3 active:scale-95">
+                                                    <CreditCard size={18} /> Authorize Payment
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        deleteBug(selectedReport.id).then(() => {
+                                                            fetchReports();
+                                                            setSelectedReport(null);
+                                                        });
+                                                    }}
+                                                    className="px-6 py-5 bg-white/5 border border-white/10 text-red-500 hover:bg-red-500/10 hover:border-red-500/50 transition-all rounded-[20px] active:scale-95"
+                                                >
+                                                    <Trash2 size={20} />
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <span className="text-[9px] font-bold text-slate-600 uppercase tracking-widest italic">Encrypted Assessment Log</span>
-                            </div>
-                        </motion.div>
+
+                                <div className="bg-orange-950/20 p-6 border-t border-orange-500/10 flex justify-between items-center">
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                                            <span className="text-[9px] font-black text-orange-500 uppercase tracking-widest">Insurance Uplink Secure</span>
+                                        </div>
+                                    </div>
+                                    <span className="text-[9px] font-bold text-slate-600 uppercase tracking-widest italic">Encrypted Assessment Log</span>
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
                 )}
             </AnimatePresence>
@@ -376,66 +378,68 @@ export default function DamageAssessmentPage() {
             {/* CREATE/EDIT MODAL */}
             <AnimatePresence>
                 {isModalOpen && (
-                    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/95 backdrop-blur-md" onClick={closeModal} />
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0, y: 30 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.9, opacity: 0, y: 30 }}
-                            className="relative w-full max-w-xl bg-slate-900 border-2 border-orange-500/30 p-12 space-y-10 rounded-[40px] shadow-[0_0_80px_rgba(249,115,22,0.2)]"
-                        >
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-3">
-                                    <ShieldCheck className="text-orange-500" size={24} />
-                                    <h2 className="text-3xl font-black text-white tracking-widest uppercase italic">Incident Log</h2>
+                    <div className="fixed inset-0 z-[110] overflow-y-auto custom-scrollbar">
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/95 backdrop-blur-md" onClick={closeModal} />
+                        <div className="min-h-full flex items-center justify-center p-4 md:p-8">
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0, y: 30 }}
+                                animate={{ scale: 1, opacity: 1, y: 0 }}
+                                exit={{ scale: 0.9, opacity: 0, y: 30 }}
+                                className="relative w-full max-w-xl bg-slate-900 border-2 border-orange-500/30 p-12 space-y-10 rounded-[40px] shadow-[0_0_80px_rgba(249,115,22,0.2)]"
+                            >
+                                <div className="space-y-2">
+                                    <div className="flex items-center gap-3">
+                                        <ShieldCheck className="text-orange-500" size={24} />
+                                        <h2 className="text-3xl font-black text-white tracking-widest uppercase italic">Incident Log</h2>
+                                    </div>
+                                    <p className="text-[10px] text-orange-500 font-bold uppercase tracking-[0.4em] pl-1">Authorized Damage Assessment Only</p>
                                 </div>
-                                <p className="text-[10px] text-orange-500 font-bold uppercase tracking-[0.4em] pl-1">Authorized Damage Assessment Only</p>
-                            </div>
 
-                            <form onSubmit={handleSave} className="space-y-8">
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Location / Event</label>
-                                    <input
-                                        value={title}
-                                        onChange={e => setTitle(e.target.value)}
-                                        className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-sm focus:border-orange-500 outline-none transition-all rounded-2xl placeholder:opacity-20"
-                                        placeholder="E.G. NEW YORK INVASION DAMAGE..."
-                                        required
-                                    />
-                                </div>
-                                <div className="grid grid-cols-2 gap-8">
+                                <form onSubmit={handleSave} className="space-y-8">
                                     <div className="space-y-3">
-                                        <label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Impact Level (1-5)</label>
-                                        <select value={priority} onChange={e => setPriority(Number(e.target.value))} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-orange-500 outline-none rounded-2xl appearance-none cursor-pointer">
-                                            {[1, 2, 3, 4, 5].map(v => <option key={v} value={v}>LEVEL {v} DAMAGE</option>)}
-                                        </select>
+                                        <label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Location / Event</label>
+                                        <input
+                                            value={title}
+                                            onChange={e => setTitle(e.target.value)}
+                                            className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-sm focus:border-orange-500 outline-none transition-all rounded-2xl placeholder:opacity-20"
+                                            placeholder="E.G. NEW YORK INVASION DAMAGE..."
+                                            required
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-8">
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Impact Level (1-5)</label>
+                                            <select value={priority} onChange={e => setPriority(Number(e.target.value))} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-orange-500 outline-none rounded-2xl appearance-none cursor-pointer">
+                                                {[1, 2, 3, 4, 5].map(v => <option key={v} value={v}>LEVEL {v} DAMAGE</option>)}
+                                            </select>
+                                        </div>
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Status</label>
+                                            <select value={status} onChange={e => setStatus(e.target.value as any)} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-orange-500 outline-none rounded-2xl appearance-none cursor-pointer">
+                                                <option value="OPEN">UNDER REVIEW</option>
+                                                <option value="IN_PROGRESS">FUNDS ALLOCATED</option>
+                                                <option value="RESOLVED">COMPENSATED</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div className="space-y-3">
-                                        <label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Status</label>
-                                        <select value={status} onChange={e => setStatus(e.target.value as any)} className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-xs focus:border-orange-500 outline-none rounded-2xl appearance-none cursor-pointer">
-                                            <option value="OPEN">UNDER REVIEW</option>
-                                            <option value="IN_PROGRESS">FUNDS ALLOCATED</option>
-                                            <option value="RESOLVED">COMPENSATED</option>
-                                        </select>
+                                        <label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Incident Debrief</label>
+                                        <textarea
+                                            value={description}
+                                            onChange={e => setDescription(e.target.value)}
+                                            className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-sm focus:border-orange-500 outline-none transition-all rounded-2xl h-32 resize-none placeholder:opacity-20"
+                                            placeholder="DESCRIBE THE PROPERTY DAMAGE OR COLLATERAL LOSS..."
+                                        />
                                     </div>
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Incident Debrief</label>
-                                    <textarea
-                                        value={description}
-                                        onChange={e => setDescription(e.target.value)}
-                                        className="w-full bg-black/50 border border-white/10 p-5 text-white font-mono text-sm focus:border-orange-500 outline-none transition-all rounded-2xl h-32 resize-none placeholder:opacity-20"
-                                        placeholder="DESCRIBE THE PROPERTY DAMAGE OR COLLATERAL LOSS..."
-                                    />
-                                </div>
-                                <div className="pt-4">
-                                    <button type="submit" className="w-full py-5 bg-orange-600 text-white font-black text-xs tracking-[0.4em] uppercase hover:bg-orange-500 transition-all flex items-center justify-center gap-4 rounded-2xl shadow-[0_15px_30px_rgba(249,115,22,0.3)] active:scale-95 group">
-                                        <Save size={18} className="group-hover:rotate-12 transition-transform" />
-                                        Finalize Assessment
-                                    </button>
-                                </div>
-                            </form>
-                        </motion.div>
+                                    <div className="pt-4">
+                                        <button type="submit" className="w-full py-5 bg-orange-600 text-white font-black text-xs tracking-[0.4em] uppercase hover:bg-orange-500 transition-all flex items-center justify-center gap-4 rounded-2xl shadow-[0_15px_30px_rgba(249,115,22,0.3)] active:scale-95 group">
+                                            <Save size={18} className="group-hover:rotate-12 transition-transform" />
+                                            Finalize Assessment
+                                        </button>
+                                    </div>
+                                </form>
+                            </motion.div>
+                        </div>
                     </div>
                 )}
             </AnimatePresence>
