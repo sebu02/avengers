@@ -633,7 +633,7 @@ const TimeTravelModal = ({ onClose }: any) => (
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative z-10 bg-slate-900 border-2 border-purple-600 rounded-xl p-8 max-w-2xl w-full"
+                className="relative bg-slate-900 border-2 border-purple-600 rounded-xl p-8 max-w-2xl w-full"
             >
                 <h2 className="text-3xl font-black text-purple-500 mb-6 text-center">QUANTUM TIME TRAVEL</h2>
 
